@@ -1189,7 +1189,7 @@
                 { round: 'Tiebreaker', name: 'Total Points', actualKey: 'sbTotalPoints', simKey: null, idx: null, pickKey: 'tiebreaker' }
             ];
 
-            body.innerHTML = games.map(game => {
+            const gameRows = games.map(game => {
                 const actual = game.idx !== null ? actualResults[game.actualKey]?.[game.idx] : actualResults[game.actualKey];
                 const sim = game.simKey && (game.idx !== null ? simResults[game.simKey]?.[game.idx] : simResults[game.simKey]);
                 const effective = actual || sim;
@@ -1222,6 +1222,24 @@
                     </tr>
                 `;
             }).join('');
+
+            // Calculate scores for the totals row
+            const scores = calculateScores(results, true);
+
+            const totalsRow = `
+                <tr style="background: rgba(255,255,255,0.1); font-weight: bold;">
+                    <td class="game-col" style="background: rgba(76, 175, 80, 0.3);">TOTAL</td>
+                    <td class="game-col" style="background: rgba(76, 175, 80, 0.3);">Score</td>
+                    <td class="actual-result" style="background: rgba(76, 175, 80, 0.3);">-</td>
+                    ${participants.map(name => {
+                        const s = scores[name];
+                        const simHtml = s.simPoints > 0 ? `<span style="color:#FF9800; font-size:0.75rem;"> (+${s.simPoints})</span>` : '';
+                        return `<td style="background: rgba(76, 175, 80, 0.2); font-size: 1rem;">${s.points}${simHtml}</td>`;
+                    }).join('')}
+                </tr>
+            `;
+
+            body.innerHTML = gameRows + totalsRow;
         }
 
         // Initialize
