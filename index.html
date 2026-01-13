@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 NFL Playoff Madness</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn {
+            display: block;
+            margin: 0 auto 20px;
+            padding: 8px 16px;
+            background: rgba(76, 175, 80, 0.3);
+            border: 1px solid #4CAF50;
+            border-radius: 6px;
+            color: #4CAF50;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(76, 175, 80, 0.5);
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .tab.active {
+            background: #4CAF50;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Bracket Styles */
+        .bracket-container {
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+
+        .bracket {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            min-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .conference {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .round {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .round-label {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .matchup {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: 140px;
+        }
+
+        .team {
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+        }
+
+        .team:last-child {
+            border-bottom: none;
+        }
+
+        .team.winner {
+            background: rgba(76, 175, 80, 0.3);
+            font-weight: bold;
+        }
+
+        .team.loser {
+            opacity: 0.5;
+        }
+
+        .seed {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .score {
+            margin-left: auto;
+            font-weight: bold;
+            color: #888;
+        }
+
+        .team.winner .score {
+            color: #4CAF50;
+        }
+
+        .super-bowl {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 180px;
+        }
+
+        .super-bowl h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .super-bowl .matchup {
+            background: rgba(0,0,0,0.2);
+        }
+
+        .super-bowl .team {
+            color: #000;
+        }
+
+        .super-bowl .team.winner {
+            background: rgba(0,0,0,0.3);
+        }
+
+        /* Standings Styles */
+        .standings-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .standings-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .standings-table th,
+        .standings-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .standings-table th {
+            background: rgba(255,255,255,0.1);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .standings-table tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .standings-table .rank {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .standings-table .rank-1 { color: #FFD700; }
+        .standings-table .rank-2 { color: #C0C0C0; }
+        .standings-table .rank-3 { color: #CD7F32; }
+
+        .standings-table .points {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .standings-table .tiebreaker {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* Picks Grid */
+        .picks-container {
+            overflow-x: auto;
+        }
+
+        .picks-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            min-width: 1200px;
+        }
+
+        .picks-table th,
+        .picks-table td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+        }
+
+        .picks-table th {
+            background: rgba(255,255,255,0.1);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        .picks-table .round-header {
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        .picks-table .game-col {
+            text-align: left;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .picks-table .correct {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .picks-table .incorrect {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            text-decoration: line-through;
+        }
+
+        .picks-table .pending {
+            color: #888;
+        }
+
+        .picks-table .actual-result {
+            background: rgba(255, 215, 0, 0.2);
+            font-weight: bold;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .legend-box.correct { background: rgba(76, 175, 80, 0.3); }
+        .legend-box.incorrect { background: rgba(244, 67, 54, 0.2); }
+        .legend-box.pending { background: rgba(255, 255, 255, 0.1); }
+
+        /* Points Info */
+        .points-info {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .points-info h3 {
+            margin-bottom: 10px;
+        }
+
+        .points-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .points-breakdown span {
+            color: #888;
+        }
+
+        /* Payout Info */
+        .payout-info {
+            text-align: center;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            max-width: 400px;
+        }
+
+        .payout-info h3 {
+            color: #FFD700;
+            margin-bottom: 15px;
+        }
+
+        .payout-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .payout-row:last-child {
+            border-bottom: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        .error {
+            text-align: center;
+            padding: 20px;
+            color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .tab { padding: 10px 16px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <h1>2026 NFL Playoff Madness</h1>
+    <p class="subtitle">Entry Fee: $20 | Total Pot: $260</p>
+    <p class="last-updated" id="last-updated">Loading scores...</p>
+    <button class="refresh-btn" onclick="fetchESPNData()">Refresh Scores</button>
+
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('standings')">Standings</button>
+        <button class="tab" onclick="showTab('bracket')">Bracket</button>
+        <button class="tab" onclick="showTab('picks')">All Picks</button>
+    </div>
+
+    <div id="standings" class="tab-content active">
+        <div class="points-info">
+            <h3>Scoring</h3>
+            <div class="points-breakdown">
+                <span>Wild Card: 1 pt</span>
+                <span>Divisional: 2 pts</span>
+                <span>Championship: 3 pts</span>
+                <span>Super Bowl: 4 pts</span>
+            </div>
+        </div>
+
+        <div class="standings-container">
+            <table class="standings-table" id="standings-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Points</th>
+                        <th>Tiebreaker</th>
+                        <th>Max Possible</th>
+                    </tr>
+                </thead>
+                <tbody id="standings-body"></tbody>
+            </table>
+        </div>
+
+        <div class="payout-info">
+            <h3>Payouts</h3>
+            <div class="payout-row"><span>1st Place</span><span>$130</span></div>
+            <div class="payout-row"><span>2nd Place</span><span>$70</span></div>
+            <div class="payout-row"><span>3rd Place</span><span>$40</span></div>
+            <div class="payout-row"><span>4th Place</span><span>$20</span></div>
+        </div>
+    </div>
+
+    <div id="bracket" class="tab-content">
+        <div class="bracket-container">
+            <div class="bracket">
+                <!-- NFC Side -->
+                <div class="conference" id="nfc-bracket">
+                    <div class="round" id="nfc-wildcard">
+                        <div class="round-label">Wild Card</div>
+                    </div>
+                    <div class="round" id="nfc-divisional">
+                        <div class="round-label">Divisional</div>
+                    </div>
+                    <div class="round" id="nfc-championship">
+                        <div class="round-label">NFC Championship</div>
+                    </div>
+                </div>
+
+                <!-- Super Bowl -->
+                <div class="super-bowl">
+                    <h3>Super Bowl LX</h3>
+                    <div class="matchup" id="super-bowl-matchup"></div>
+                </div>
+
+                <!-- AFC Side -->
+                <div class="conference" id="afc-bracket">
+                    <div class="round" id="afc-championship">
+                        <div class="round-label">AFC Championship</div>
+                    </div>
+                    <div class="round" id="afc-divisional">
+                        <div class="round-label">Divisional</div>
+                    </div>
+                    <div class="round" id="afc-wildcard">
+                        <div class="round-label">Wild Card</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="picks" class="tab-content">
+        <div class="legend">
+            <div class="legend-item"><div class="legend-box correct"></div> Correct</div>
+            <div class="legend-item"><div class="legend-box incorrect"></div> Incorrect</div>
+            <div class="legend-item"><div class="legend-box pending"></div> Pending</div>
+        </div>
+        <div class="picks-container">
+            <table class="picks-table" id="picks-table">
+                <thead id="picks-header"></thead>
+                <tbody id="picks-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Team Data
+        const teams = {
+            // AFC
+            'DEN': { name: 'Broncos', seed: 1, conf: 'AFC' },
+            'NE': { name: 'Patriots', seed: 2, conf: 'AFC' },
+            'JAX': { name: 'Jaguars', seed: 3, conf: 'AFC' },
+            'PIT': { name: 'Steelers', seed: 4, conf: 'AFC' },
+            'HOU': { name: 'Texans', seed: 5, conf: 'AFC' },
+            'BUF': { name: 'Bills', seed: 6, conf: 'AFC' },
+            'LAC': { name: 'Chargers', seed: 7, conf: 'AFC' },
+            // NFC
+            'SEA': { name: 'Seahawks', seed: 1, conf: 'NFC' },
+            'CHI': { name: 'Bears', seed: 2, conf: 'NFC' },
+            'PHI': { name: 'Eagles', seed: 3, conf: 'NFC' },
+            'CAR': { name: 'Panthers', seed: 4, conf: 'NFC' },
+            'LAR': { name: 'Rams', seed: 5, conf: 'NFC' },
+            'SF': { name: '49ers', seed: 6, conf: 'NFC' },
+            'GB': { name: 'Packers', seed: 7, conf: 'NFC' }
+        };
+
+        // ESPN team abbreviation mapping (ESPN uses slightly different abbrevs)
+        const espnToLocal = {
+            'LAR': 'LAR', 'LA': 'LAR',
+            'CAR': 'CAR',
+            'CHI': 'CHI',
+            'GB': 'GB',
+            'BUF': 'BUF',
+            'JAX': 'JAX',
+            'SF': 'SF',
+            'PHI': 'PHI',
+            'NE': 'NE',
+            'LAC': 'LAC',
+            'HOU': 'HOU',
+            'PIT': 'PIT',
+            'DEN': 'DEN',
+            'SEA': 'SEA'
+        };
+
+        // Wild Card Matchups (for reference)
+        const wildcardMatchups = {
+            afc: [
+                { away: 'LAC', home: 'NE' },   // 7 @ 2
+                { away: 'BUF', home: 'JAX' },  // 6 @ 3
+                { away: 'HOU', home: 'PIT' }   // 5 @ 4
+            ],
+            nfc: [
+                { away: 'GB', home: 'CHI' },   // 7 @ 2
+                { away: 'SF', home: 'PHI' },   // 6 @ 3
+                { away: 'LAR', home: 'CAR' }   // 5 @ 4
+            ]
+        };
+
+        // Participants and their picks
+        const participants = [
+            'James', 'David', 'Chuck', 'Carol', 'Ryan', 'Marcus',
+            'Sean', 'Corey', 'Paul', 'Michelle', 'Bryan', 'Christina', 'Amy'
+        ];
+
+        const picks = {
+            'James':    { wcAfc: ['NE', 'JAX', 'HOU'], wcNfc: ['CHI', 'PHI', 'LAR'], divAfc: ['DEN', 'JAX'], divNfc: ['SEA', 'PHI'], champAfc: 'JAX', champNfc: 'SEA', sb: 'JAX', tiebreaker: 39 },
+            'David':    { wcAfc: ['NE', 'BUF', 'HOU'], wcNfc: ['CHI', 'SF', 'LAR'], divAfc: ['BUF', 'NE'], divNfc: ['SEA', 'CHI'], champAfc: 'NE', champNfc: 'SEA', sb: 'SEA', tiebreaker: 55 },
+            'Chuck':    { wcAfc: ['NE', 'JAX', 'HOU'], wcNfc: ['CHI', 'PHI', 'CAR'], divAfc: ['DEN', 'NE'], divNfc: ['SEA', 'CHI'], champAfc: 'DEN', champNfc: 'SEA', sb: 'DEN', tiebreaker: 41 },
+            'Carol':    { wcAfc: ['NE', 'JAX', 'HOU'], wcNfc: ['CHI', 'SF', 'LAR'], divAfc: ['DEN', 'JAX'], divNfc: ['SEA', 'CHI'], champAfc: 'DEN', champNfc: 'SEA', sb: 'SEA', tiebreaker: 57 },
+            'Ryan':     { wcAfc: ['LAC', 'BUF', 'HOU'], wcNfc: ['CHI', 'PHI', 'LAR'], divAfc: ['DEN', 'HOU'], divNfc: ['SEA', 'CHI'], champAfc: 'HOU', champNfc: 'SEA', sb: 'HOU', tiebreaker: 44 },
+            'Marcus':   { wcAfc: ['NE', 'BUF', 'HOU'], wcNfc: ['GB', 'SF', 'LAR'], divAfc: ['BUF', 'NE'], divNfc: ['SEA', 'LAR'], champAfc: 'NE', champNfc: 'LAR', sb: 'LAR', tiebreaker: 47 },
+            'Sean':     { wcAfc: ['LAC', 'JAX', 'HOU'], wcNfc: ['CHI', 'PHI', 'LAR'], divAfc: ['DEN', 'HOU'], divNfc: ['SEA', 'CHI'], champAfc: 'HOU', champNfc: 'CHI', sb: 'HOU', tiebreaker: 40 },
+            'Corey':    { wcAfc: ['NE', 'BUF', 'HOU'], wcNfc: ['CHI', 'SF', 'LAR'], divAfc: ['DEN', 'NE'], divNfc: ['SEA', 'LAR'], champAfc: 'NE', champNfc: 'SEA', sb: 'SEA', tiebreaker: 57 },
+            'Paul':     { wcAfc: ['NE', 'JAX', 'HOU'], wcNfc: ['CHI', 'PHI', 'LAR'], divAfc: ['DEN', 'NE'], divNfc: ['SEA', 'LAR'], champAfc: 'DEN', champNfc: 'LAR', sb: 'LAR', tiebreaker: 48 },
+            'Michelle': { wcAfc: ['NE', 'JAX', 'HOU'], wcNfc: ['CHI', 'SF', 'CAR'], divAfc: ['DEN', 'JAX'], divNfc: ['SEA', 'CHI'], champAfc: 'DEN', champNfc: 'CHI', sb: 'CHI', tiebreaker: 41 },
+            'Bryan':    { wcAfc: ['NE', 'JAX', 'HOU'], wcNfc: ['CHI', 'SF', 'LAR'], divAfc: ['DEN', 'NE'], divNfc: ['SEA', 'LAR'], champAfc: 'DEN', champNfc: 'SEA', sb: 'SEA', tiebreaker: 34 },
+            'Christina':{ wcAfc: ['NE', 'BUF', 'HOU'], wcNfc: ['CHI', 'PHI', 'CAR'], divAfc: ['DEN', 'NE'], divNfc: ['SEA', 'CHI'], champAfc: 'NE', champNfc: 'SEA', sb: 'NE', tiebreaker: 51 },
+            'Amy':      { wcAfc: ['NE', 'BUF', 'HOU'], wcNfc: ['GB', 'PHI', 'LAR'], divAfc: ['DEN', 'NE'], divNfc: ['SEA', 'LAR'], champAfc: 'DEN', champNfc: 'SEA', sb: 'DEN', tiebreaker: 36 }
+        };
+
+        // Results from ESPN (will be populated by API)
+        let results = {
+            wcAfc: [null, null, null],  // [LAC@NE, BUF@JAX, HOU@PIT]
+            wcNfc: [null, null, null],  // [GB@CHI, SF@PHI, LAR@CAR]
+            divAfc: [null, null],
+            divNfc: [null, null],
+            champAfc: null,
+            champNfc: null,
+            sbWinner: null,
+            sbTotalPoints: null,
+            // Store game details for bracket display
+            games: {}
+        };
+
+        // Fetch data from ESPN API
+        async function fetchESPNData() {
+            try {
+                document.getElementById('last-updated').textContent = 'Fetching scores...';
+
+                const response = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard');
+                const data = await response.json();
+
+                processESPNData(data);
+
+                const now = new Date();
+                document.getElementById('last-updated').textContent = `Last updated: ${now.toLocaleString()}`;
+
+                renderAll();
+            } catch (error) {
+                console.error('Error fetching ESPN data:', error);
+                document.getElementById('last-updated').textContent = 'Error loading scores. Using cached data.';
+                renderAll();
+            }
+        }
+
+        function processESPNData(data) {
+            if (!data.events) return;
+
+            data.events.forEach(event => {
+                const competition = event.competitions[0];
+                const status = competition.status.type.completed;
+                const seasonType = event.season.type; // 3 = postseason
+
+                if (seasonType !== 3) return; // Only process playoff games
+
+                // Get teams and scores
+                const homeTeam = competition.competitors.find(c => c.homeAway === 'home');
+                const awayTeam = competition.competitors.find(c => c.homeAway === 'away');
+
+                const homeAbbr = espnToLocal[homeTeam.team.abbreviation] || homeTeam.team.abbreviation;
+                const awayAbbr = espnToLocal[awayTeam.team.abbreviation] || awayTeam.team.abbreviation;
+                const homeScore = parseInt(homeTeam.score) || 0;
+                const awayScore = parseInt(awayTeam.score) || 0;
+
+                // Store game details
+                const gameKey = `${awayAbbr}@${homeAbbr}`;
+                results.games[gameKey] = {
+                    homeTeam: homeAbbr,
+                    awayTeam: awayAbbr,
+                    homeScore: homeScore,
+                    awayScore: awayScore,
+                    completed: status,
+                    winner: status ? (homeScore > awayScore ? homeAbbr : awayAbbr) : null
+                };
+
+                if (!status) return; // Game not finished
+
+                const winner = homeScore > awayScore ? homeAbbr : awayAbbr;
+
+                // Determine which round/game this is
+                const notes = event.competitions[0].notes;
+                const headline = notes && notes[0] ? notes[0].headline : '';
+
+                // Wild Card AFC
+                if ((awayAbbr === 'LAC' && homeAbbr === 'NE') || (awayAbbr === 'NE' && homeAbbr === 'LAC')) {
+                    results.wcAfc[0] = winner;
+                } else if ((awayAbbr === 'BUF' && homeAbbr === 'JAX') || (awayAbbr === 'JAX' && homeAbbr === 'BUF')) {
+                    results.wcAfc[1] = winner;
+                } else if ((awayAbbr === 'HOU' && homeAbbr === 'PIT') || (awayAbbr === 'PIT' && homeAbbr === 'HOU')) {
+                    results.wcAfc[2] = winner;
+                }
+                // Wild Card NFC
+                else if ((awayAbbr === 'GB' && homeAbbr === 'CHI') || (awayAbbr === 'CHI' && homeAbbr === 'GB')) {
+                    results.wcNfc[0] = winner;
+                } else if ((awayAbbr === 'SF' && homeAbbr === 'PHI') || (awayAbbr === 'PHI' && homeAbbr === 'SF')) {
+                    results.wcNfc[1] = winner;
+                } else if ((awayAbbr === 'LAR' && homeAbbr === 'CAR') || (awayAbbr === 'CAR' && homeAbbr === 'LAR')) {
+                    results.wcNfc[2] = winner;
+                }
+                // Divisional - check if DEN or SEA are involved (they have byes)
+                else if (homeAbbr === 'DEN' || awayAbbr === 'DEN') {
+                    results.divAfc[0] = winner;
+                } else if (homeAbbr === 'SEA' || awayAbbr === 'SEA') {
+                    results.divNfc[0] = winner;
+                }
+                // Other divisional games (between WC winners)
+                else if (teams[homeAbbr]?.conf === 'AFC' && teams[awayAbbr]?.conf === 'AFC') {
+                    if (results.divAfc[1] === null) results.divAfc[1] = winner;
+                } else if (teams[homeAbbr]?.conf === 'NFC' && teams[awayAbbr]?.conf === 'NFC') {
+                    if (results.divNfc[1] === null) results.divNfc[1] = winner;
+                }
+
+                // Championship games - check headline or if both teams are divisional winners
+                if (headline.includes('AFC Championship') || headline.includes('AFC Champ')) {
+                    results.champAfc = winner;
+                } else if (headline.includes('NFC Championship') || headline.includes('NFC Champ')) {
+                    results.champNfc = winner;
+                }
+
+                // Super Bowl
+                if (headline.includes('Super Bowl')) {
+                    results.sbWinner = winner;
+                    results.sbTotalPoints = homeScore + awayScore;
+                }
+            });
+        }
+
+        // Calculate scores
+        function calculateScores() {
+            const scores = {};
+
+            participants.forEach(name => {
+                const p = picks[name];
+                let points = 0;
+                let maxPossible = 0;
+
+                // Wild Card (1 point each)
+                for (let i = 0; i < 3; i++) {
+                    if (results.wcAfc[i] !== null) {
+                        if (p.wcAfc[i] === results.wcAfc[i]) points += 1;
+                    } else {
+                        maxPossible += 1;
+                    }
+                    if (results.wcNfc[i] !== null) {
+                        if (p.wcNfc[i] === results.wcNfc[i]) points += 1;
+                    } else {
+                        maxPossible += 1;
+                    }
+                }
+
+                // Divisional (2 points each)
+                for (let i = 0; i < 2; i++) {
+                    if (results.divAfc[i] !== null) {
+                        if (p.divAfc[i] === results.divAfc[i]) points += 2;
+                    } else if (canStillWin(p.divAfc[i], 'divAfc', i)) {
+                        maxPossible += 2;
+                    }
+                    if (results.divNfc[i] !== null) {
+                        if (p.divNfc[i] === results.divNfc[i]) points += 2;
+                    } else if (canStillWin(p.divNfc[i], 'divNfc', i)) {
+                        maxPossible += 2;
+                    }
+                }
+
+                // Championship (3 points each)
+                if (results.champAfc !== null) {
+                    if (p.champAfc === results.champAfc) points += 3;
+                } else if (canStillWinChamp(p.champAfc, 'AFC')) {
+                    maxPossible += 3;
+                }
+                if (results.champNfc !== null) {
+                    if (p.champNfc === results.champNfc) points += 3;
+                } else if (canStillWinChamp(p.champNfc, 'NFC')) {
+                    maxPossible += 3;
+                }
+
+                // Super Bowl (4 points)
+                if (results.sbWinner !== null) {
+                    if (p.sb === results.sbWinner) points += 4;
+                } else if (canStillWinSB(p.sb)) {
+                    maxPossible += 4;
+                }
+
+                scores[name] = {
+                    points: points,
+                    maxPossible: points + maxPossible,
+                    tiebreaker: p.tiebreaker
+                };
+            });
+
+            return scores;
+        }
+
+        function canStillWin(team, round, idx) {
+            // Check if a team can still win a divisional game
+            const byeTeam = round === 'divAfc' ? 'DEN' : 'SEA';
+
+            if (idx === 0) {
+                // Game vs bye team - team must have won wild card or be the bye team
+                if (team === byeTeam) return true;
+                const wcResults = round === 'divAfc' ? results.wcAfc : results.wcNfc;
+                for (let i = 0; i < 3; i++) {
+                    if (wcResults[i] === team) return true;
+                    if (wcResults[i] === null) {
+                        // Check if team is in that matchup
+                        const matchups = round === 'divAfc' ? wildcardMatchups.afc : wildcardMatchups.nfc;
+                        if (matchups[i].away === team || matchups[i].home === team) return true;
+                    }
+                }
+                return false;
+            } else {
+                // Other divisional game
+                const wcResults = round === 'divAfc' ? results.wcAfc : results.wcNfc;
+                for (let i = 0; i < 3; i++) {
+                    if (wcResults[i] === team) return true;
+                    if (wcResults[i] === null) {
+                        const matchups = round === 'divAfc' ? wildcardMatchups.afc : wildcardMatchups.nfc;
+                        if (matchups[i].away === team || matchups[i].home === team) return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        function canStillWinChamp(team, conf) {
+            const divResults = conf === 'AFC' ? results.divAfc : results.divNfc;
+            // Team can win championship if they won divisional or divisional not played
+            if (divResults[0] === team || divResults[1] === team) return true;
+            if (divResults[0] === null || divResults[1] === null) {
+                return canStillWin(team, conf === 'AFC' ? 'divAfc' : 'divNfc', 0) ||
+                       canStillWin(team, conf === 'AFC' ? 'divAfc' : 'divNfc', 1);
+            }
+            return false;
+        }
+
+        function canStillWinSB(team) {
+            const conf = teams[team]?.conf;
+            if (!conf) return false;
+            if (results.champAfc === team || results.champNfc === team) return true;
+            if (conf === 'AFC' && results.champAfc === null) return canStillWinChamp(team, 'AFC');
+            if (conf === 'NFC' && results.champNfc === null) return canStillWinChamp(team, 'NFC');
+            return false;
+        }
+
+        // Tab switching
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // Render all components
+        function renderAll() {
+            renderStandings();
+            renderBracket();
+            renderPicks();
+        }
+
+        // Render standings
+        function renderStandings() {
+            const scores = calculateScores();
+            const sorted = participants.map(name => ({
+                name,
+                ...scores[name]
+            })).sort((a, b) => {
+                if (b.points !== a.points) return b.points - a.points;
+                if (results.sbTotalPoints !== null) {
+                    return Math.abs(a.tiebreaker - results.sbTotalPoints) - Math.abs(b.tiebreaker - results.sbTotalPoints);
+                }
+                return 0;
+            });
+
+            const tbody = document.getElementById('standings-body');
+            tbody.innerHTML = sorted.map((p, i) => `
+                <tr>
+                    <td class="rank rank-${i + 1}">${i + 1}</td>
+                    <td>${p.name}</td>
+                    <td class="points">${p.points}</td>
+                    <td class="tiebreaker">${p.tiebreaker} pts</td>
+                    <td>${p.maxPossible}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Render bracket
+        function renderBracket() {
+            // NFC Wild Card
+            const nfcWc = document.getElementById('nfc-wildcard');
+            nfcWc.innerHTML = '<div class="round-label">Wild Card</div>';
+            wildcardMatchups.nfc.forEach((game, i) => {
+                const gameKey = `${game.away}@${game.home}`;
+                const gameData = results.games[gameKey] || {};
+                nfcWc.innerHTML += createMatchup(game.away, game.home, results.wcNfc[i], gameData);
+            });
+
+            // AFC Wild Card
+            const afcWc = document.getElementById('afc-wildcard');
+            afcWc.innerHTML = '<div class="round-label">Wild Card</div>';
+            wildcardMatchups.afc.forEach((game, i) => {
+                const gameKey = `${game.away}@${game.home}`;
+                const gameData = results.games[gameKey] || {};
+                afcWc.innerHTML += createMatchup(game.away, game.home, results.wcAfc[i], gameData);
+            });
+
+            // NFC Divisional - determine matchups based on WC results
+            const nfcDiv = document.getElementById('nfc-divisional');
+            nfcDiv.innerHTML = '<div class="round-label">Divisional</div>';
+            const nfcWcWinners = results.wcNfc.filter(w => w !== null);
+            if (nfcWcWinners.length === 3) {
+                const sorted = nfcWcWinners.sort((a, b) => teams[b].seed - teams[a].seed);
+                nfcDiv.innerHTML += createMatchup(sorted[0], 'SEA', results.divNfc[0], {});
+                nfcDiv.innerHTML += createMatchup(sorted[2], sorted[1], results.divNfc[1], {});
+            } else {
+                nfcDiv.innerHTML += createMatchup('TBD', 'SEA', results.divNfc[0], {});
+                nfcDiv.innerHTML += createMatchup('TBD', 'TBD', results.divNfc[1], {});
+            }
+
+            // AFC Divisional
+            const afcDiv = document.getElementById('afc-divisional');
+            afcDiv.innerHTML = '<div class="round-label">Divisional</div>';
+            const afcWcWinners = results.wcAfc.filter(w => w !== null);
+            if (afcWcWinners.length === 3) {
+                const sorted = afcWcWinners.sort((a, b) => teams[b].seed - teams[a].seed);
+                afcDiv.innerHTML += createMatchup(sorted[0], 'DEN', results.divAfc[0], {});
+                afcDiv.innerHTML += createMatchup(sorted[2], sorted[1], results.divAfc[1], {});
+            } else {
+                afcDiv.innerHTML += createMatchup('TBD', 'DEN', results.divAfc[0], {});
+                afcDiv.innerHTML += createMatchup('TBD', 'TBD', results.divAfc[1], {});
+            }
+
+            // Championships
+            const nfcChamp = document.getElementById('nfc-championship');
+            nfcChamp.innerHTML = '<div class="round-label">NFC Championship</div>';
+            const nfcDivWinners = results.divNfc.filter(w => w !== null);
+            if (nfcDivWinners.length === 2) {
+                const sorted = nfcDivWinners.sort((a, b) => teams[b].seed - teams[a].seed);
+                nfcChamp.innerHTML += createMatchup(sorted[0], sorted[1], results.champNfc, {});
+            } else {
+                nfcChamp.innerHTML += createMatchup('TBD', 'TBD', results.champNfc, {});
+            }
+
+            const afcChamp = document.getElementById('afc-championship');
+            afcChamp.innerHTML = '<div class="round-label">AFC Championship</div>';
+            const afcDivWinners = results.divAfc.filter(w => w !== null);
+            if (afcDivWinners.length === 2) {
+                const sorted = afcDivWinners.sort((a, b) => teams[b].seed - teams[a].seed);
+                afcChamp.innerHTML += createMatchup(sorted[0], sorted[1], results.champAfc, {});
+            } else {
+                afcChamp.innerHTML += createMatchup('TBD', 'TBD', results.champAfc, {});
+            }
+
+            // Super Bowl
+            const sbMatchup = document.getElementById('super-bowl-matchup');
+            const nfcRep = results.champNfc || 'TBD';
+            const afcRep = results.champAfc || 'TBD';
+            sbMatchup.innerHTML = `
+                <div class="team ${results.sbWinner === nfcRep ? 'winner' : results.sbWinner ? 'loser' : ''}">
+                    <span>NFC</span> <span>${nfcRep}</span>
+                </div>
+                <div class="team ${results.sbWinner === afcRep ? 'winner' : results.sbWinner ? 'loser' : ''}">
+                    <span>AFC</span> <span>${afcRep}</span>
+                </div>
+            `;
+        }
+
+        function createMatchup(away, home, winner, gameData) {
+            const awayTeam = teams[away] || { name: away, seed: '?' };
+            const homeTeam = teams[home] || { name: home, seed: '?' };
+            const awayScore = gameData.awayScore !== undefined ? gameData.awayScore : '';
+            const homeScore = gameData.homeScore !== undefined ? gameData.homeScore : '';
+
+            return `
+                <div class="matchup">
+                    <div class="team ${winner === away ? 'winner' : winner ? 'loser' : ''}">
+                        <span class="seed">${awayTeam.seed}</span>
+                        <span>${away}</span>
+                        ${awayScore !== '' ? `<span class="score">${awayScore}</span>` : ''}
+                    </div>
+                    <div class="team ${winner === home ? 'winner' : winner ? 'loser' : ''}">
+                        <span class="seed">${homeTeam.seed}</span>
+                        <span>${home}</span>
+                        ${homeScore !== '' ? `<span class="score">${homeScore}</span>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render picks table
+        function renderPicks() {
+            const header = document.getElementById('picks-header');
+            const body = document.getElementById('picks-body');
+
+            header.innerHTML = `
+                <tr>
+                    <th>Round</th>
+                    <th>Game</th>
+                    <th>Result</th>
+                    ${participants.map(p => `<th>${p}</th>`).join('')}
+                </tr>
+            `;
+
+            const games = [
+                { round: 'Wild Card (1pt)', name: 'LAC @ NE', resultKey: 'wcAfc', idx: 0, pickKey: 'wcAfc' },
+                { round: '', name: 'BUF @ JAX', resultKey: 'wcAfc', idx: 1, pickKey: 'wcAfc' },
+                { round: '', name: 'HOU @ PIT', resultKey: 'wcAfc', idx: 2, pickKey: 'wcAfc' },
+                { round: '', name: 'GB @ CHI', resultKey: 'wcNfc', idx: 0, pickKey: 'wcNfc' },
+                { round: '', name: 'SF @ PHI', resultKey: 'wcNfc', idx: 1, pickKey: 'wcNfc' },
+                { round: '', name: 'LAR @ CAR', resultKey: 'wcNfc', idx: 2, pickKey: 'wcNfc' },
+                { round: 'Divisional (2pts)', name: 'AFC vs DEN', resultKey: 'divAfc', idx: 0, pickKey: 'divAfc' },
+                { round: '', name: 'AFC Other', resultKey: 'divAfc', idx: 1, pickKey: 'divAfc' },
+                { round: '', name: 'NFC vs SEA', resultKey: 'divNfc', idx: 0, pickKey: 'divNfc' },
+                { round: '', name: 'NFC Other', resultKey: 'divNfc', idx: 1, pickKey: 'divNfc' },
+                { round: 'Championship (3pts)', name: 'AFC Champ', resultKey: 'champAfc', idx: null, pickKey: 'champAfc' },
+                { round: '', name: 'NFC Champ', resultKey: 'champNfc', idx: null, pickKey: 'champNfc' },
+                { round: 'Super Bowl (4pts)', name: 'Super Bowl', resultKey: 'sbWinner', idx: null, pickKey: 'sb' },
+                { round: 'Tiebreaker', name: 'Total Points', resultKey: 'sbTotalPoints', idx: null, pickKey: 'tiebreaker' }
+            ];
+
+            body.innerHTML = games.map(game => {
+                const result = game.idx !== null ? results[game.resultKey]?.[game.idx] : results[game.resultKey];
+
+                return `
+                    <tr>
+                        <td class="game-col ${game.round ? 'round-header' : ''}">${game.round}</td>
+                        <td class="game-col">${game.name}</td>
+                        <td class="actual-result">${result !== null && result !== undefined ? result : '-'}</td>
+                        ${participants.map(name => {
+                            const pick = game.idx !== null ? picks[name][game.pickKey]?.[game.idx] : picks[name][game.pickKey];
+                            let className = 'pending';
+                            if (result !== null && result !== undefined) {
+                                if (game.pickKey === 'tiebreaker') {
+                                    className = '';
+                                } else {
+                                    className = pick === result ? 'correct' : 'incorrect';
+                                }
+                            }
+                            return `<td class="${className}">${pick}</td>`;
+                        }).join('')}
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Initialize - fetch data on load
+        fetchESPNData();
+
+        // Auto-refresh every 5 minutes
+        setInterval(fetchESPNData, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
