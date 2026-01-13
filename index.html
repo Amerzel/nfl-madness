@@ -470,6 +470,46 @@
             font-style: italic;
         }
 
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .section-header:hover {
+            opacity: 0.8;
+        }
+
+        .collapse-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #888;
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .collapse-btn:hover {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+
+        .collapsible {
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 1000px;
+            opacity: 1;
+        }
+
+        .collapsible.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: 1.6rem; }
             .bracket { min-width: 900px; }
@@ -534,11 +574,32 @@
             </div>
         </section>
 
+        <!-- All Picks -->
+        <section>
+            <h2>All Picks</h2>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-box correct"></div> Correct</div>
+                <div class="legend-item"><div class="legend-box incorrect"></div> Incorrect</div>
+                <div class="legend-item"><div class="legend-box pending"></div> Pending</div>
+                <div class="legend-item"><div class="legend-box simulated"></div> Simulated</div>
+            </div>
+            <div class="picks-container">
+                <table class="picks-table" id="picks-table">
+                    <thead id="picks-header"></thead>
+                    <tbody id="picks-body"></tbody>
+                </table>
+            </div>
+        </section>
+
         <!-- Standings and Info -->
         <section>
             <div class="two-column">
                 <div>
-                    <h2>Standings</h2>
+                    <div class="section-header" onclick="toggleStandings()">
+                        <h2 style="margin-bottom: 0; border-bottom: none;">Standings</h2>
+                        <button class="collapse-btn" id="standings-toggle">Hide ▲</button>
+                    </div>
+                    <div class="collapsible" id="standings-content" style="margin-top: 15px;">
                     <table class="standings-table" id="standings-table">
                         <thead>
                             <tr>
@@ -551,6 +612,7 @@
                         </thead>
                         <tbody id="standings-body"></tbody>
                     </table>
+                    </div>
                 </div>
                 <div class="sidebar">
                     <div class="info-box">
@@ -570,23 +632,6 @@
                         <div class="payout-row"><span>4th Place</span><span>$20</span></div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- All Picks -->
-        <section>
-            <h2>All Picks</h2>
-            <div class="legend">
-                <div class="legend-item"><div class="legend-box correct"></div> Correct</div>
-                <div class="legend-item"><div class="legend-box incorrect"></div> Incorrect</div>
-                <div class="legend-item"><div class="legend-box pending"></div> Pending</div>
-                <div class="legend-item"><div class="legend-box simulated"></div> Simulated</div>
-            </div>
-            <div class="picks-container">
-                <table class="picks-table" id="picks-table">
-                    <thead id="picks-header"></thead>
-                    <tbody id="picks-body"></tbody>
-                </table>
             </div>
         </section>
     </div>
@@ -1240,6 +1285,20 @@
             `;
 
             body.innerHTML = gameRows + totalsRow;
+        }
+
+        // Toggle standings visibility
+        function toggleStandings() {
+            const content = document.getElementById('standings-content');
+            const btn = document.getElementById('standings-toggle');
+
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                btn.textContent = 'Hide ▲';
+            } else {
+                content.classList.add('collapsed');
+                btn.textContent = 'Show ▼';
+            }
         }
 
         // Initialize
