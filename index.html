@@ -19,126 +19,146 @@
             padding: 20px;
         }
 
-        h1 {
+        .header {
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+            font-size: 2.2rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         .subtitle {
-            text-align: center;
             color: #888;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .last-updated {
-            text-align: center;
             color: #666;
             font-size: 0.8rem;
-            margin-bottom: 20px;
         }
 
-        .refresh-btn {
-            display: block;
-            margin: 0 auto 20px;
-            padding: 8px 16px;
-            background: rgba(76, 175, 80, 0.3);
-            border: 1px solid #4CAF50;
-            border-radius: 6px;
-            color: #4CAF50;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .refresh-btn:hover {
-            background: rgba(76, 175, 80, 0.5);
-        }
-
-        .tabs {
+        .controls {
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 30px;
+            margin: 15px 0;
             flex-wrap: wrap;
         }
 
-        .tab {
-            padding: 12px 24px;
+        .btn {
+            padding: 8px 16px;
             background: rgba(255,255,255,0.1);
-            border: none;
-            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
             color: #fff;
             cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s;
+            font-size: 0.85rem;
+            transition: all 0.2s;
         }
 
-        .tab:hover {
+        .btn:hover {
             background: rgba(255,255,255,0.2);
         }
 
-        .tab.active {
-            background: #4CAF50;
+        .btn-primary {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4CAF50;
+            color: #4CAF50;
         }
 
-        .tab-content {
+        .btn-warning {
+            background: rgba(255, 152, 0, 0.3);
+            border-color: #FF9800;
+            color: #FF9800;
+        }
+
+        .simulation-banner {
             display: none;
+            background: rgba(255, 152, 0, 0.2);
+            border: 1px solid #FF9800;
+            border-radius: 8px;
+            padding: 10px 20px;
+            margin: 15px auto;
+            max-width: 600px;
+            text-align: center;
+            color: #FF9800;
         }
 
-        .tab-content.active {
+        .simulation-banner.active {
             display: block;
+        }
+
+        /* Main Layout */
+        .main-content {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         /* Bracket Styles */
         .bracket-container {
             overflow-x: auto;
-            padding: 20px 0;
+            padding: 10px 0;
         }
 
         .bracket {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            min-width: 1200px;
+            gap: 15px;
+            min-width: 1100px;
             margin: 0 auto;
         }
 
         .conference {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .round {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
 
         .round-label {
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #888;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .matchup {
             background: rgba(255,255,255,0.05);
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
-            min-width: 140px;
+            min-width: 120px;
         }
 
         .team {
-            padding: 10px 12px;
+            padding: 8px 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            transition: all 0.2s;
         }
 
         .team:last-child {
@@ -154,12 +174,25 @@
             opacity: 0.5;
         }
 
+        .team.clickable {
+            cursor: pointer;
+        }
+
+        .team.clickable:hover {
+            background: rgba(255, 152, 0, 0.3);
+        }
+
+        .team.simulated {
+            background: rgba(255, 152, 0, 0.4);
+            border-left: 3px solid #FF9800;
+        }
+
         .seed {
             background: rgba(255,255,255,0.2);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            min-width: 20px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            min-width: 18px;
             text-align: center;
         }
 
@@ -167,6 +200,7 @@
             margin-left: auto;
             font-weight: bold;
             color: #888;
+            font-size: 0.75rem;
         }
 
         .team.winner .score {
@@ -176,15 +210,15 @@
         .super-bowl {
             background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             color: #000;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 15px;
+            border-radius: 10px;
             text-align: center;
-            min-width: 180px;
+            min-width: 150px;
         }
 
         .super-bowl h3 {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
+            font-size: 1rem;
+            margin-bottom: 10px;
         }
 
         .super-bowl .matchup {
@@ -199,23 +233,36 @@
             background: rgba(0,0,0,0.3);
         }
 
-        /* Standings Styles */
-        .standings-container {
-            max-width: 1000px;
-            margin: 0 auto;
+        .super-bowl .team.clickable:hover {
+            background: rgba(0,0,0,0.4);
         }
 
+        /* Two Column Layout for Standings and Info */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Standings Styles */
         .standings-table {
             width: 100%;
             border-collapse: collapse;
             background: rgba(255,255,255,0.05);
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
+            font-size: 0.9rem;
         }
 
         .standings-table th,
         .standings-table td {
-            padding: 15px;
+            padding: 12px 10px;
             text-align: left;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
@@ -224,7 +271,7 @@
             background: rgba(255,255,255,0.1);
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: #888;
         }
 
@@ -235,6 +282,7 @@
         .standings-table .rank {
             font-weight: bold;
             color: #4CAF50;
+            width: 40px;
         }
 
         .standings-table .rank-1 { color: #FFD700; }
@@ -243,12 +291,74 @@
 
         .standings-table .points {
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+        }
+
+        .standings-table .sim-points {
+            color: #FF9800;
+            font-size: 0.8rem;
+            margin-left: 5px;
         }
 
         .standings-table .tiebreaker {
             color: #888;
+            font-size: 0.85rem;
+        }
+
+        .standings-table .change {
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
+
+        .standings-table .change.up { color: #4CAF50; }
+        .standings-table .change.down { color: #f44336; }
+
+        /* Info Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .info-box {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .info-box h3 {
             font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .scoring-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .scoring-grid span:nth-child(even) {
+            text-align: right;
+            color: #4CAF50;
+        }
+
+        .payout-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+        }
+
+        .payout-row:last-child {
+            border-bottom: none;
+        }
+
+        .payout-row span:last-child {
+            color: #FFD700;
         }
 
         /* Picks Grid */
@@ -260,17 +370,16 @@
             width: 100%;
             border-collapse: collapse;
             background: rgba(255,255,255,0.05);
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
-            min-width: 1200px;
+            font-size: 0.8rem;
         }
 
         .picks-table th,
         .picks-table td {
-            padding: 10px 8px;
+            padding: 8px 6px;
             text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.85rem;
         }
 
         .picks-table th {
@@ -278,27 +387,30 @@
             font-weight: 600;
             position: sticky;
             top: 0;
+            font-size: 0.75rem;
         }
 
         .picks-table .round-header {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
+            font-weight: 600;
         }
 
         .picks-table .game-col {
             text-align: left;
             font-weight: 500;
             white-space: nowrap;
+            padding-left: 10px;
         }
 
         .picks-table .correct {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #4CAF50;
             font-weight: bold;
         }
 
         .picks-table .incorrect {
-            background: rgba(244, 67, 54, 0.2);
-            color: #f44336;
+            background: rgba(244, 67, 54, 0.15);
+            color: #e57373;
             text-decoration: line-through;
         }
 
@@ -306,8 +418,20 @@
             color: #888;
         }
 
+        .picks-table .simulated-correct {
+            background: rgba(255, 152, 0, 0.25);
+            color: #FFB74D;
+            font-weight: bold;
+        }
+
+        .picks-table .simulated-incorrect {
+            background: rgba(255, 152, 0, 0.1);
+            color: #999;
+            text-decoration: line-through;
+        }
+
         .picks-table .actual-result {
-            background: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.15);
             font-weight: bold;
         }
 
@@ -315,205 +439,161 @@
         .legend {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin: 20px 0;
+            gap: 20px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
+            font-size: 0.8rem;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
+            gap: 6px;
         }
 
         .legend-box {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
         }
 
         .legend-box.correct { background: rgba(76, 175, 80, 0.3); }
         .legend-box.incorrect { background: rgba(244, 67, 54, 0.2); }
         .legend-box.pending { background: rgba(255, 255, 255, 0.1); }
+        .legend-box.simulated { background: rgba(255, 152, 0, 0.3); }
 
-        /* Points Info */
-        .points-info {
+        .click-hint {
             text-align: center;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            max-width: 600px;
-            margin: 20px auto;
-        }
-
-        .points-info h3 {
+            color: #888;
+            font-size: 0.8rem;
             margin-bottom: 10px;
-        }
-
-        .points-breakdown {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .points-breakdown span {
-            color: #888;
-        }
-
-        /* Payout Info */
-        .payout-info {
-            text-align: center;
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 8px;
-            max-width: 400px;
-        }
-
-        .payout-info h3 {
-            color: #FFD700;
-            margin-bottom: 15px;
-        }
-
-        .payout-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .payout-row:last-child {
-            border-bottom: none;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #888;
-        }
-
-        .error {
-            text-align: center;
-            padding: 20px;
-            color: #f44336;
-            background: rgba(244, 67, 54, 0.1);
-            border-radius: 8px;
-            margin: 20px auto;
-            max-width: 600px;
+            font-style: italic;
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 1.8rem; }
-            .tab { padding: 10px 16px; font-size: 0.9rem; }
+            h1 { font-size: 1.6rem; }
+            .bracket { min-width: 900px; }
         }
     </style>
 </head>
 <body>
-    <h1>2026 NFL Playoff Madness</h1>
-    <p class="subtitle">Entry Fee: $20 | Total Pot: $260</p>
-    <p class="last-updated" id="last-updated">Loading scores...</p>
-    <button class="refresh-btn" onclick="fetchESPNData()">Refresh Scores</button>
-
-    <div class="tabs">
-        <button class="tab active" onclick="showTab('standings')">Standings</button>
-        <button class="tab" onclick="showTab('bracket')">Bracket</button>
-        <button class="tab" onclick="showTab('picks')">All Picks</button>
+    <div class="header">
+        <h1>2026 NFL Playoff Madness</h1>
+        <p class="subtitle">Entry Fee: $20 | Total Pot: $260 | 13 Players</p>
+        <p class="last-updated" id="last-updated">Loading scores...</p>
     </div>
 
-    <div id="standings" class="tab-content active">
-        <div class="points-info">
-            <h3>Scoring</h3>
-            <div class="points-breakdown">
-                <span>Wild Card: 1 pt</span>
-                <span>Divisional: 2 pts</span>
-                <span>Championship: 3 pts</span>
-                <span>Super Bowl: 4 pts</span>
-            </div>
-        </div>
-
-        <div class="standings-container">
-            <table class="standings-table" id="standings-table">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Name</th>
-                        <th>Points</th>
-                        <th>Tiebreaker</th>
-                        <th>Max Possible</th>
-                    </tr>
-                </thead>
-                <tbody id="standings-body"></tbody>
-            </table>
-        </div>
-
-        <div class="payout-info">
-            <h3>Payouts</h3>
-            <div class="payout-row"><span>1st Place</span><span>$130</span></div>
-            <div class="payout-row"><span>2nd Place</span><span>$70</span></div>
-            <div class="payout-row"><span>3rd Place</span><span>$40</span></div>
-            <div class="payout-row"><span>4th Place</span><span>$20</span></div>
-        </div>
+    <div class="controls">
+        <button class="btn btn-primary" onclick="fetchESPNData()">Refresh Scores</button>
+        <button class="btn btn-warning" onclick="clearSimulation()" id="clear-sim-btn" style="display:none;">Clear Simulation</button>
     </div>
 
-    <div id="bracket" class="tab-content">
-        <div class="bracket-container">
-            <div class="bracket">
-                <!-- NFC Side -->
-                <div class="conference" id="nfc-bracket">
-                    <div class="round" id="nfc-wildcard">
-                        <div class="round-label">Wild Card</div>
-                    </div>
-                    <div class="round" id="nfc-divisional">
-                        <div class="round-label">Divisional</div>
-                    </div>
-                    <div class="round" id="nfc-championship">
-                        <div class="round-label">NFC Championship</div>
-                    </div>
-                </div>
+    <div class="simulation-banner" id="sim-banner">
+        <strong>Simulation Mode:</strong> Click teams to preview different outcomes. <span id="sim-count">0</span> game(s) simulated.
+    </div>
 
-                <!-- Super Bowl -->
-                <div class="super-bowl">
-                    <h3>Super Bowl LX</h3>
-                    <div class="matchup" id="super-bowl-matchup"></div>
-                </div>
+    <div class="main-content">
+        <!-- Bracket Section -->
+        <section>
+            <h2>Playoff Bracket</h2>
+            <p class="click-hint">Click on a team in an unfinished game to simulate them winning</p>
+            <div class="bracket-container">
+                <div class="bracket">
+                    <!-- NFC Side -->
+                    <div class="conference" id="nfc-bracket">
+                        <div class="round" id="nfc-wildcard">
+                            <div class="round-label">Wild Card</div>
+                        </div>
+                        <div class="round" id="nfc-divisional">
+                            <div class="round-label">Divisional</div>
+                        </div>
+                        <div class="round" id="nfc-championship">
+                            <div class="round-label">NFC Champ</div>
+                        </div>
+                    </div>
 
-                <!-- AFC Side -->
-                <div class="conference" id="afc-bracket">
-                    <div class="round" id="afc-championship">
-                        <div class="round-label">AFC Championship</div>
+                    <!-- Super Bowl -->
+                    <div class="super-bowl">
+                        <h3>Super Bowl LX</h3>
+                        <div class="matchup" id="super-bowl-matchup"></div>
                     </div>
-                    <div class="round" id="afc-divisional">
-                        <div class="round-label">Divisional</div>
-                    </div>
-                    <div class="round" id="afc-wildcard">
-                        <div class="round-label">Wild Card</div>
+
+                    <!-- AFC Side -->
+                    <div class="conference" id="afc-bracket">
+                        <div class="round" id="afc-championship">
+                            <div class="round-label">AFC Champ</div>
+                        </div>
+                        <div class="round" id="afc-divisional">
+                            <div class="round-label">Divisional</div>
+                        </div>
+                        <div class="round" id="afc-wildcard">
+                            <div class="round-label">Wild Card</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div id="picks" class="tab-content">
-        <div class="legend">
-            <div class="legend-item"><div class="legend-box correct"></div> Correct</div>
-            <div class="legend-item"><div class="legend-box incorrect"></div> Incorrect</div>
-            <div class="legend-item"><div class="legend-box pending"></div> Pending</div>
-        </div>
-        <div class="picks-container">
-            <table class="picks-table" id="picks-table">
-                <thead id="picks-header"></thead>
-                <tbody id="picks-body"></tbody>
-            </table>
-        </div>
+        <!-- Standings and Info -->
+        <section>
+            <div class="two-column">
+                <div>
+                    <h2>Standings</h2>
+                    <table class="standings-table" id="standings-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Points</th>
+                                <th>Tiebreaker</th>
+                                <th>Max Possible</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-body"></tbody>
+                    </table>
+                </div>
+                <div class="sidebar">
+                    <div class="info-box">
+                        <h3>Scoring</h3>
+                        <div class="scoring-grid">
+                            <span>Wild Card</span><span>1 pt</span>
+                            <span>Divisional</span><span>2 pts</span>
+                            <span>Championship</span><span>3 pts</span>
+                            <span>Super Bowl</span><span>4 pts</span>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <h3>Payouts</h3>
+                        <div class="payout-row"><span>1st Place</span><span>$130</span></div>
+                        <div class="payout-row"><span>2nd Place</span><span>$70</span></div>
+                        <div class="payout-row"><span>3rd Place</span><span>$40</span></div>
+                        <div class="payout-row"><span>4th Place</span><span>$20</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- All Picks -->
+        <section>
+            <h2>All Picks</h2>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-box correct"></div> Correct</div>
+                <div class="legend-item"><div class="legend-box incorrect"></div> Incorrect</div>
+                <div class="legend-item"><div class="legend-box pending"></div> Pending</div>
+                <div class="legend-item"><div class="legend-box simulated"></div> Simulated</div>
+            </div>
+            <div class="picks-container">
+                <table class="picks-table" id="picks-table">
+                    <thead id="picks-header"></thead>
+                    <tbody id="picks-body"></tbody>
+                </table>
+            </div>
+        </section>
     </div>
 
     <script>
         // Team Data
         const teams = {
-            // AFC
             'DEN': { name: 'Broncos', seed: 1, conf: 'AFC' },
             'NE': { name: 'Patriots', seed: 2, conf: 'AFC' },
             'JAX': { name: 'Jaguars', seed: 3, conf: 'AFC' },
@@ -521,7 +601,6 @@
             'HOU': { name: 'Texans', seed: 5, conf: 'AFC' },
             'BUF': { name: 'Bills', seed: 6, conf: 'AFC' },
             'LAC': { name: 'Chargers', seed: 7, conf: 'AFC' },
-            // NFC
             'SEA': { name: 'Seahawks', seed: 1, conf: 'NFC' },
             'CHI': { name: 'Bears', seed: 2, conf: 'NFC' },
             'PHI': { name: 'Eagles', seed: 3, conf: 'NFC' },
@@ -531,39 +610,25 @@
             'GB': { name: 'Packers', seed: 7, conf: 'NFC' }
         };
 
-        // ESPN team abbreviation mapping (ESPN uses slightly different abbrevs)
         const espnToLocal = {
-            'LAR': 'LAR', 'LA': 'LAR',
-            'CAR': 'CAR',
-            'CHI': 'CHI',
-            'GB': 'GB',
-            'BUF': 'BUF',
-            'JAX': 'JAX',
-            'SF': 'SF',
-            'PHI': 'PHI',
-            'NE': 'NE',
-            'LAC': 'LAC',
-            'HOU': 'HOU',
-            'PIT': 'PIT',
-            'DEN': 'DEN',
-            'SEA': 'SEA'
+            'LAR': 'LAR', 'LA': 'LAR', 'CAR': 'CAR', 'CHI': 'CHI', 'GB': 'GB',
+            'BUF': 'BUF', 'JAX': 'JAX', 'SF': 'SF', 'PHI': 'PHI', 'NE': 'NE',
+            'LAC': 'LAC', 'HOU': 'HOU', 'PIT': 'PIT', 'DEN': 'DEN', 'SEA': 'SEA'
         };
 
-        // Wild Card Matchups (for reference)
         const wildcardMatchups = {
             afc: [
-                { away: 'LAC', home: 'NE' },   // 7 @ 2
-                { away: 'BUF', home: 'JAX' },  // 6 @ 3
-                { away: 'HOU', home: 'PIT' }   // 5 @ 4
+                { away: 'LAC', home: 'NE' },
+                { away: 'BUF', home: 'JAX' },
+                { away: 'HOU', home: 'PIT' }
             ],
             nfc: [
-                { away: 'GB', home: 'CHI' },   // 7 @ 2
-                { away: 'SF', home: 'PHI' },   // 6 @ 3
-                { away: 'LAR', home: 'CAR' }   // 5 @ 4
+                { away: 'GB', home: 'CHI' },
+                { away: 'SF', home: 'PHI' },
+                { away: 'LAR', home: 'CAR' }
             ]
         };
 
-        // Participants and their picks
         const participants = [
             'James', 'David', 'Chuck', 'Carol', 'Ryan', 'Marcus',
             'Sean', 'Corey', 'Paul', 'Michelle', 'Bryan', 'Christina', 'Amy'
@@ -585,33 +650,138 @@
             'Amy':      { wcAfc: ['NE', 'BUF', 'HOU'], wcNfc: ['GB', 'PHI', 'LAR'], divAfc: ['DEN', 'NE'], divNfc: ['SEA', 'LAR'], champAfc: 'DEN', champNfc: 'SEA', sb: 'DEN', tiebreaker: 36 }
         };
 
-        // Results from ESPN (will be populated by API)
-        let results = {
-            wcAfc: [null, null, null],  // [LAC@NE, BUF@JAX, HOU@PIT]
-            wcNfc: [null, null, null],  // [GB@CHI, SF@PHI, LAR@CAR]
+        // Actual results from ESPN
+        let actualResults = {
+            wcAfc: [null, null, null],
+            wcNfc: [null, null, null],
             divAfc: [null, null],
             divNfc: [null, null],
             champAfc: null,
             champNfc: null,
             sbWinner: null,
             sbTotalPoints: null,
-            // Store game details for bracket display
             games: {}
         };
 
-        // Fetch data from ESPN API
+        // Simulated results (user clicks)
+        let simResults = {
+            wcAfc: [null, null, null],
+            wcNfc: [null, null, null],
+            divAfc: [null, null],
+            divNfc: [null, null],
+            champAfc: null,
+            champNfc: null,
+            sbWinner: null
+        };
+
+        // Get effective results (actual + simulated)
+        function getEffectiveResults() {
+            return {
+                wcAfc: actualResults.wcAfc.map((r, i) => r || simResults.wcAfc[i]),
+                wcNfc: actualResults.wcNfc.map((r, i) => r || simResults.wcNfc[i]),
+                divAfc: actualResults.divAfc.map((r, i) => r || simResults.divAfc[i]),
+                divNfc: actualResults.divNfc.map((r, i) => r || simResults.divNfc[i]),
+                champAfc: actualResults.champAfc || simResults.champAfc,
+                champNfc: actualResults.champNfc || simResults.champNfc,
+                sbWinner: actualResults.sbWinner || simResults.sbWinner,
+                sbTotalPoints: actualResults.sbTotalPoints,
+                games: actualResults.games
+            };
+        }
+
+        function countSimulations() {
+            let count = 0;
+            simResults.wcAfc.forEach(r => r && count++);
+            simResults.wcNfc.forEach(r => r && count++);
+            simResults.divAfc.forEach(r => r && count++);
+            simResults.divNfc.forEach(r => r && count++);
+            if (simResults.champAfc) count++;
+            if (simResults.champNfc) count++;
+            if (simResults.sbWinner) count++;
+            return count;
+        }
+
+        function updateSimulationUI() {
+            const count = countSimulations();
+            const banner = document.getElementById('sim-banner');
+            const clearBtn = document.getElementById('clear-sim-btn');
+            const countSpan = document.getElementById('sim-count');
+
+            if (count > 0) {
+                banner.classList.add('active');
+                clearBtn.style.display = 'inline-block';
+                countSpan.textContent = count;
+            } else {
+                banner.classList.remove('active');
+                clearBtn.style.display = 'none';
+            }
+        }
+
+        function clearSimulation() {
+            simResults = {
+                wcAfc: [null, null, null],
+                wcNfc: [null, null, null],
+                divAfc: [null, null],
+                divNfc: [null, null],
+                champAfc: null,
+                champNfc: null,
+                sbWinner: null
+            };
+            updateSimulationUI();
+            renderAll();
+        }
+
+        function simulateWinner(round, conf, idx, winner) {
+            // Don't simulate if actual result exists
+            if (round === 'wc') {
+                const key = conf === 'AFC' ? 'wcAfc' : 'wcNfc';
+                if (actualResults[key][idx]) return;
+                simResults[key][idx] = simResults[key][idx] === winner ? null : winner;
+            } else if (round === 'div') {
+                const key = conf === 'AFC' ? 'divAfc' : 'divNfc';
+                if (actualResults[key][idx]) return;
+                simResults[key][idx] = simResults[key][idx] === winner ? null : winner;
+            } else if (round === 'champ') {
+                const key = conf === 'AFC' ? 'champAfc' : 'champNfc';
+                if (actualResults[key]) return;
+                simResults[key] = simResults[key] === winner ? null : winner;
+            } else if (round === 'sb') {
+                if (actualResults.sbWinner) return;
+                simResults.sbWinner = simResults.sbWinner === winner ? null : winner;
+            }
+
+            // Clear downstream simulations when changing upstream
+            clearDownstream(round, conf, idx);
+
+            updateSimulationUI();
+            renderAll();
+        }
+
+        function clearDownstream(round, conf, idx) {
+            if (round === 'wc') {
+                // Clear divisional and beyond for this conference
+                const divKey = conf === 'AFC' ? 'divAfc' : 'divNfc';
+                const champKey = conf === 'AFC' ? 'champAfc' : 'champNfc';
+                simResults[divKey] = [null, null];
+                simResults[champKey] = null;
+                simResults.sbWinner = null;
+            } else if (round === 'div') {
+                const champKey = conf === 'AFC' ? 'champAfc' : 'champNfc';
+                simResults[champKey] = null;
+                simResults.sbWinner = null;
+            } else if (round === 'champ') {
+                simResults.sbWinner = null;
+            }
+        }
+
+        // Fetch ESPN Data
         async function fetchESPNData() {
             try {
                 document.getElementById('last-updated').textContent = 'Fetching scores...';
-
                 const response = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard');
                 const data = await response.json();
-
                 processESPNData(data);
-
-                const now = new Date();
-                document.getElementById('last-updated').textContent = `Last updated: ${now.toLocaleString()}`;
-
+                document.getElementById('last-updated').textContent = `Last updated: ${new Date().toLocaleString()}`;
                 renderAll();
             } catch (error) {
                 console.error('Error fetching ESPN data:', error);
@@ -626,11 +796,10 @@
             data.events.forEach(event => {
                 const competition = event.competitions[0];
                 const status = competition.status.type.completed;
-                const seasonType = event.season.type; // 3 = postseason
+                const seasonType = event.season.type;
 
-                if (seasonType !== 3) return; // Only process playoff games
+                if (seasonType !== 3) return;
 
-                // Get teams and scores
                 const homeTeam = competition.competitors.find(c => c.homeAway === 'home');
                 const awayTeam = competition.competitors.find(c => c.homeAway === 'away');
 
@@ -639,128 +808,134 @@
                 const homeScore = parseInt(homeTeam.score) || 0;
                 const awayScore = parseInt(awayTeam.score) || 0;
 
-                // Store game details
                 const gameKey = `${awayAbbr}@${homeAbbr}`;
-                results.games[gameKey] = {
-                    homeTeam: homeAbbr,
-                    awayTeam: awayAbbr,
-                    homeScore: homeScore,
-                    awayScore: awayScore,
-                    completed: status,
+                actualResults.games[gameKey] = {
+                    homeTeam: homeAbbr, awayTeam: awayAbbr,
+                    homeScore, awayScore, completed: status,
                     winner: status ? (homeScore > awayScore ? homeAbbr : awayAbbr) : null
                 };
 
-                if (!status) return; // Game not finished
+                if (!status) return;
 
                 const winner = homeScore > awayScore ? homeAbbr : awayAbbr;
-
-                // Determine which round/game this is
-                const notes = event.competitions[0].notes;
+                const notes = competition.notes;
                 const headline = notes && notes[0] ? notes[0].headline : '';
 
-                // Wild Card AFC
+                // Wild Card
                 if ((awayAbbr === 'LAC' && homeAbbr === 'NE') || (awayAbbr === 'NE' && homeAbbr === 'LAC')) {
-                    results.wcAfc[0] = winner;
+                    actualResults.wcAfc[0] = winner;
                 } else if ((awayAbbr === 'BUF' && homeAbbr === 'JAX') || (awayAbbr === 'JAX' && homeAbbr === 'BUF')) {
-                    results.wcAfc[1] = winner;
+                    actualResults.wcAfc[1] = winner;
                 } else if ((awayAbbr === 'HOU' && homeAbbr === 'PIT') || (awayAbbr === 'PIT' && homeAbbr === 'HOU')) {
-                    results.wcAfc[2] = winner;
-                }
-                // Wild Card NFC
-                else if ((awayAbbr === 'GB' && homeAbbr === 'CHI') || (awayAbbr === 'CHI' && homeAbbr === 'GB')) {
-                    results.wcNfc[0] = winner;
+                    actualResults.wcAfc[2] = winner;
+                } else if ((awayAbbr === 'GB' && homeAbbr === 'CHI') || (awayAbbr === 'CHI' && homeAbbr === 'GB')) {
+                    actualResults.wcNfc[0] = winner;
                 } else if ((awayAbbr === 'SF' && homeAbbr === 'PHI') || (awayAbbr === 'PHI' && homeAbbr === 'SF')) {
-                    results.wcNfc[1] = winner;
+                    actualResults.wcNfc[1] = winner;
                 } else if ((awayAbbr === 'LAR' && homeAbbr === 'CAR') || (awayAbbr === 'CAR' && homeAbbr === 'LAR')) {
-                    results.wcNfc[2] = winner;
+                    actualResults.wcNfc[2] = winner;
                 }
-                // Divisional - check if DEN or SEA are involved (they have byes)
+                // Divisional
                 else if (homeAbbr === 'DEN' || awayAbbr === 'DEN') {
-                    results.divAfc[0] = winner;
+                    actualResults.divAfc[0] = winner;
                 } else if (homeAbbr === 'SEA' || awayAbbr === 'SEA') {
-                    results.divNfc[0] = winner;
-                }
-                // Other divisional games (between WC winners)
-                else if (teams[homeAbbr]?.conf === 'AFC' && teams[awayAbbr]?.conf === 'AFC') {
-                    if (results.divAfc[1] === null) results.divAfc[1] = winner;
+                    actualResults.divNfc[0] = winner;
+                } else if (teams[homeAbbr]?.conf === 'AFC' && teams[awayAbbr]?.conf === 'AFC') {
+                    if (actualResults.divAfc[1] === null) actualResults.divAfc[1] = winner;
                 } else if (teams[homeAbbr]?.conf === 'NFC' && teams[awayAbbr]?.conf === 'NFC') {
-                    if (results.divNfc[1] === null) results.divNfc[1] = winner;
+                    if (actualResults.divNfc[1] === null) actualResults.divNfc[1] = winner;
                 }
 
-                // Championship games - check headline or if both teams are divisional winners
-                if (headline.includes('AFC Championship') || headline.includes('AFC Champ')) {
-                    results.champAfc = winner;
-                } else if (headline.includes('NFC Championship') || headline.includes('NFC Champ')) {
-                    results.champNfc = winner;
-                }
+                if (headline.includes('AFC Championship')) actualResults.champAfc = winner;
+                else if (headline.includes('NFC Championship')) actualResults.champNfc = winner;
 
-                // Super Bowl
                 if (headline.includes('Super Bowl')) {
-                    results.sbWinner = winner;
-                    results.sbTotalPoints = homeScore + awayScore;
+                    actualResults.sbWinner = winner;
+                    actualResults.sbTotalPoints = homeScore + awayScore;
                 }
             });
         }
 
         // Calculate scores
-        function calculateScores() {
+        function calculateScores(results, includeSimulated = false) {
             const scores = {};
 
             participants.forEach(name => {
                 const p = picks[name];
                 let points = 0;
+                let simPoints = 0;
                 let maxPossible = 0;
 
-                // Wild Card (1 point each)
+                // Wild Card
                 for (let i = 0; i < 3; i++) {
-                    if (results.wcAfc[i] !== null) {
-                        if (p.wcAfc[i] === results.wcAfc[i]) points += 1;
+                    // AFC
+                    if (actualResults.wcAfc[i] !== null) {
+                        if (p.wcAfc[i] === actualResults.wcAfc[i]) points += 1;
+                    } else if (results.wcAfc[i] !== null) {
+                        if (p.wcAfc[i] === results.wcAfc[i]) simPoints += 1;
                     } else {
                         maxPossible += 1;
                     }
-                    if (results.wcNfc[i] !== null) {
-                        if (p.wcNfc[i] === results.wcNfc[i]) points += 1;
+                    // NFC
+                    if (actualResults.wcNfc[i] !== null) {
+                        if (p.wcNfc[i] === actualResults.wcNfc[i]) points += 1;
+                    } else if (results.wcNfc[i] !== null) {
+                        if (p.wcNfc[i] === results.wcNfc[i]) simPoints += 1;
                     } else {
                         maxPossible += 1;
                     }
                 }
 
-                // Divisional (2 points each)
+                // Divisional
                 for (let i = 0; i < 2; i++) {
-                    if (results.divAfc[i] !== null) {
-                        if (p.divAfc[i] === results.divAfc[i]) points += 2;
-                    } else if (canStillWin(p.divAfc[i], 'divAfc', i)) {
+                    if (actualResults.divAfc[i] !== null) {
+                        if (p.divAfc[i] === actualResults.divAfc[i]) points += 2;
+                    } else if (results.divAfc[i] !== null) {
+                        if (p.divAfc[i] === results.divAfc[i]) simPoints += 2;
+                    } else if (canStillWin(p.divAfc[i], 'divAfc', i, results)) {
                         maxPossible += 2;
                     }
-                    if (results.divNfc[i] !== null) {
-                        if (p.divNfc[i] === results.divNfc[i]) points += 2;
-                    } else if (canStillWin(p.divNfc[i], 'divNfc', i)) {
+
+                    if (actualResults.divNfc[i] !== null) {
+                        if (p.divNfc[i] === actualResults.divNfc[i]) points += 2;
+                    } else if (results.divNfc[i] !== null) {
+                        if (p.divNfc[i] === results.divNfc[i]) simPoints += 2;
+                    } else if (canStillWin(p.divNfc[i], 'divNfc', i, results)) {
                         maxPossible += 2;
                     }
                 }
 
-                // Championship (3 points each)
-                if (results.champAfc !== null) {
-                    if (p.champAfc === results.champAfc) points += 3;
-                } else if (canStillWinChamp(p.champAfc, 'AFC')) {
-                    maxPossible += 3;
-                }
-                if (results.champNfc !== null) {
-                    if (p.champNfc === results.champNfc) points += 3;
-                } else if (canStillWinChamp(p.champNfc, 'NFC')) {
+                // Championship
+                if (actualResults.champAfc !== null) {
+                    if (p.champAfc === actualResults.champAfc) points += 3;
+                } else if (results.champAfc !== null) {
+                    if (p.champAfc === results.champAfc) simPoints += 3;
+                } else if (canStillWinChamp(p.champAfc, 'AFC', results)) {
                     maxPossible += 3;
                 }
 
-                // Super Bowl (4 points)
-                if (results.sbWinner !== null) {
-                    if (p.sb === results.sbWinner) points += 4;
-                } else if (canStillWinSB(p.sb)) {
+                if (actualResults.champNfc !== null) {
+                    if (p.champNfc === actualResults.champNfc) points += 3;
+                } else if (results.champNfc !== null) {
+                    if (p.champNfc === results.champNfc) simPoints += 3;
+                } else if (canStillWinChamp(p.champNfc, 'NFC', results)) {
+                    maxPossible += 3;
+                }
+
+                // Super Bowl
+                if (actualResults.sbWinner !== null) {
+                    if (p.sb === actualResults.sbWinner) points += 4;
+                } else if (results.sbWinner !== null) {
+                    if (p.sb === results.sbWinner) simPoints += 4;
+                } else if (canStillWinSB(p.sb, results)) {
                     maxPossible += 4;
                 }
 
                 scores[name] = {
-                    points: points,
-                    maxPossible: points + maxPossible,
+                    points,
+                    simPoints,
+                    totalPoints: points + simPoints,
+                    maxPossible: points + simPoints + maxPossible,
                     tiebreaker: p.tiebreaker
                 };
             });
@@ -768,107 +943,104 @@
             return scores;
         }
 
-        function canStillWin(team, round, idx) {
-            // Check if a team can still win a divisional game
+        function canStillWin(team, round, idx, results) {
             const byeTeam = round === 'divAfc' ? 'DEN' : 'SEA';
+            const wcKey = round === 'divAfc' ? 'wcAfc' : 'wcNfc';
 
-            if (idx === 0) {
-                // Game vs bye team - team must have won wild card or be the bye team
-                if (team === byeTeam) return true;
-                const wcResults = round === 'divAfc' ? results.wcAfc : results.wcNfc;
-                for (let i = 0; i < 3; i++) {
-                    if (wcResults[i] === team) return true;
-                    if (wcResults[i] === null) {
-                        // Check if team is in that matchup
-                        const matchups = round === 'divAfc' ? wildcardMatchups.afc : wildcardMatchups.nfc;
-                        if (matchups[i].away === team || matchups[i].home === team) return true;
-                    }
-                }
-                return false;
-            } else {
-                // Other divisional game
-                const wcResults = round === 'divAfc' ? results.wcAfc : results.wcNfc;
-                for (let i = 0; i < 3; i++) {
-                    if (wcResults[i] === team) return true;
-                    if (wcResults[i] === null) {
-                        const matchups = round === 'divAfc' ? wildcardMatchups.afc : wildcardMatchups.nfc;
-                        if (matchups[i].away === team || matchups[i].home === team) return true;
-                    }
-                }
-                return false;
-            }
-        }
+            if (team === byeTeam) return true;
 
-        function canStillWinChamp(team, conf) {
-            const divResults = conf === 'AFC' ? results.divAfc : results.divNfc;
-            // Team can win championship if they won divisional or divisional not played
-            if (divResults[0] === team || divResults[1] === team) return true;
-            if (divResults[0] === null || divResults[1] === null) {
-                return canStillWin(team, conf === 'AFC' ? 'divAfc' : 'divNfc', 0) ||
-                       canStillWin(team, conf === 'AFC' ? 'divAfc' : 'divNfc', 1);
+            for (let i = 0; i < 3; i++) {
+                if (results[wcKey][i] === team) return true;
+                if (results[wcKey][i] === null) {
+                    const matchups = round === 'divAfc' ? wildcardMatchups.afc : wildcardMatchups.nfc;
+                    if (matchups[i].away === team || matchups[i].home === team) return true;
+                }
             }
             return false;
         }
 
-        function canStillWinSB(team) {
+        function canStillWinChamp(team, conf, results) {
+            const divKey = conf === 'AFC' ? 'divAfc' : 'divNfc';
+            if (results[divKey][0] === team || results[divKey][1] === team) return true;
+            if (results[divKey][0] === null || results[divKey][1] === null) {
+                return canStillWin(team, divKey, 0, results) || canStillWin(team, divKey, 1, results);
+            }
+            return false;
+        }
+
+        function canStillWinSB(team, results) {
             const conf = teams[team]?.conf;
             if (!conf) return false;
             if (results.champAfc === team || results.champNfc === team) return true;
-            if (conf === 'AFC' && results.champAfc === null) return canStillWinChamp(team, 'AFC');
-            if (conf === 'NFC' && results.champNfc === null) return canStillWinChamp(team, 'NFC');
+            if (conf === 'AFC' && results.champAfc === null) return canStillWinChamp(team, 'AFC', results);
+            if (conf === 'NFC' && results.champNfc === null) return canStillWinChamp(team, 'NFC', results);
             return false;
         }
 
-        // Tab switching
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
-        }
-
-        // Render all components
         function renderAll() {
-            renderStandings();
-            renderBracket();
-            renderPicks();
+            const results = getEffectiveResults();
+            renderBracket(results);
+            renderStandings(results);
+            renderPicks(results);
         }
 
-        // Render standings
-        function renderStandings() {
-            const scores = calculateScores();
+        function renderStandings(results) {
+            const scores = calculateScores(results, true);
+            const baseScores = calculateScores(actualResults, false);
+
             const sorted = participants.map(name => ({
                 name,
-                ...scores[name]
+                ...scores[name],
+                basePoints: baseScores[name].points
             })).sort((a, b) => {
-                if (b.points !== a.points) return b.points - a.points;
+                if (b.totalPoints !== a.totalPoints) return b.totalPoints - a.totalPoints;
                 if (results.sbTotalPoints !== null) {
                     return Math.abs(a.tiebreaker - results.sbTotalPoints) - Math.abs(b.tiebreaker - results.sbTotalPoints);
                 }
                 return 0;
             });
 
+            // Calculate base rankings for comparison
+            const baseSorted = participants.map(name => ({
+                name, points: baseScores[name].points
+            })).sort((a, b) => b.points - a.points);
+            const baseRanks = {};
+            baseSorted.forEach((p, i) => baseRanks[p.name] = i + 1);
+
             const tbody = document.getElementById('standings-body');
-            tbody.innerHTML = sorted.map((p, i) => `
-                <tr>
-                    <td class="rank rank-${i + 1}">${i + 1}</td>
-                    <td>${p.name}</td>
-                    <td class="points">${p.points}</td>
-                    <td class="tiebreaker">${p.tiebreaker} pts</td>
-                    <td>${p.maxPossible}</td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = sorted.map((p, i) => {
+                const rank = i + 1;
+                const baseRank = baseRanks[p.name];
+                const rankChange = baseRank - rank;
+                let changeHtml = '';
+                if (countSimulations() > 0 && rankChange !== 0) {
+                    changeHtml = `<span class="change ${rankChange > 0 ? 'up' : 'down'}">${rankChange > 0 ? '▲' : '▼'}${Math.abs(rankChange)}</span>`;
+                }
+
+                const simHtml = p.simPoints > 0 ? `<span class="sim-points">(+${p.simPoints})</span>` : '';
+
+                return `
+                    <tr>
+                        <td class="rank rank-${rank}">${rank}${changeHtml}</td>
+                        <td>${p.name}</td>
+                        <td class="points">${p.points}${simHtml}</td>
+                        <td class="tiebreaker">${p.tiebreaker} pts</td>
+                        <td>${p.maxPossible}</td>
+                    </tr>
+                `;
+            }).join('');
         }
 
-        // Render bracket
-        function renderBracket() {
+        function renderBracket(results) {
             // NFC Wild Card
             const nfcWc = document.getElementById('nfc-wildcard');
             nfcWc.innerHTML = '<div class="round-label">Wild Card</div>';
             wildcardMatchups.nfc.forEach((game, i) => {
                 const gameKey = `${game.away}@${game.home}`;
                 const gameData = results.games[gameKey] || {};
-                nfcWc.innerHTML += createMatchup(game.away, game.home, results.wcNfc[i], gameData);
+                const actualWinner = actualResults.wcNfc[i];
+                const simWinner = simResults.wcNfc[i];
+                nfcWc.innerHTML += createMatchup(game.away, game.home, actualWinner, simWinner, gameData, 'wc', 'NFC', i);
             });
 
             // AFC Wild Card
@@ -877,84 +1049,108 @@
             wildcardMatchups.afc.forEach((game, i) => {
                 const gameKey = `${game.away}@${game.home}`;
                 const gameData = results.games[gameKey] || {};
-                afcWc.innerHTML += createMatchup(game.away, game.home, results.wcAfc[i], gameData);
+                const actualWinner = actualResults.wcAfc[i];
+                const simWinner = simResults.wcAfc[i];
+                afcWc.innerHTML += createMatchup(game.away, game.home, actualWinner, simWinner, gameData, 'wc', 'AFC', i);
             });
 
-            // NFC Divisional - determine matchups based on WC results
-            const nfcDiv = document.getElementById('nfc-divisional');
-            nfcDiv.innerHTML = '<div class="round-label">Divisional</div>';
-            const nfcWcWinners = results.wcNfc.filter(w => w !== null);
-            if (nfcWcWinners.length === 3) {
-                const sorted = nfcWcWinners.sort((a, b) => teams[b].seed - teams[a].seed);
-                nfcDiv.innerHTML += createMatchup(sorted[0], 'SEA', results.divNfc[0], {});
-                nfcDiv.innerHTML += createMatchup(sorted[2], sorted[1], results.divNfc[1], {});
-            } else {
-                nfcDiv.innerHTML += createMatchup('TBD', 'SEA', results.divNfc[0], {});
-                nfcDiv.innerHTML += createMatchup('TBD', 'TBD', results.divNfc[1], {});
-            }
+            // Divisional
+            renderDivisional('nfc', results);
+            renderDivisional('afc', results);
 
-            // AFC Divisional
-            const afcDiv = document.getElementById('afc-divisional');
-            afcDiv.innerHTML = '<div class="round-label">Divisional</div>';
-            const afcWcWinners = results.wcAfc.filter(w => w !== null);
-            if (afcWcWinners.length === 3) {
-                const sorted = afcWcWinners.sort((a, b) => teams[b].seed - teams[a].seed);
-                afcDiv.innerHTML += createMatchup(sorted[0], 'DEN', results.divAfc[0], {});
-                afcDiv.innerHTML += createMatchup(sorted[2], sorted[1], results.divAfc[1], {});
-            } else {
-                afcDiv.innerHTML += createMatchup('TBD', 'DEN', results.divAfc[0], {});
-                afcDiv.innerHTML += createMatchup('TBD', 'TBD', results.divAfc[1], {});
-            }
-
-            // Championships
-            const nfcChamp = document.getElementById('nfc-championship');
-            nfcChamp.innerHTML = '<div class="round-label">NFC Championship</div>';
-            const nfcDivWinners = results.divNfc.filter(w => w !== null);
-            if (nfcDivWinners.length === 2) {
-                const sorted = nfcDivWinners.sort((a, b) => teams[b].seed - teams[a].seed);
-                nfcChamp.innerHTML += createMatchup(sorted[0], sorted[1], results.champNfc, {});
-            } else {
-                nfcChamp.innerHTML += createMatchup('TBD', 'TBD', results.champNfc, {});
-            }
-
-            const afcChamp = document.getElementById('afc-championship');
-            afcChamp.innerHTML = '<div class="round-label">AFC Championship</div>';
-            const afcDivWinners = results.divAfc.filter(w => w !== null);
-            if (afcDivWinners.length === 2) {
-                const sorted = afcDivWinners.sort((a, b) => teams[b].seed - teams[a].seed);
-                afcChamp.innerHTML += createMatchup(sorted[0], sorted[1], results.champAfc, {});
-            } else {
-                afcChamp.innerHTML += createMatchup('TBD', 'TBD', results.champAfc, {});
-            }
+            // Championship
+            renderChampionship('nfc', results);
+            renderChampionship('afc', results);
 
             // Super Bowl
-            const sbMatchup = document.getElementById('super-bowl-matchup');
+            renderSuperBowl(results);
+        }
+
+        function renderDivisional(conf, results) {
+            const divEl = document.getElementById(`${conf}-divisional`);
+            divEl.innerHTML = '<div class="round-label">Divisional</div>';
+
+            const wcKey = conf === 'afc' ? 'wcAfc' : 'wcNfc';
+            const divKey = conf === 'afc' ? 'divAfc' : 'divNfc';
+            const byeTeam = conf === 'afc' ? 'DEN' : 'SEA';
+            const confUpper = conf.toUpperCase();
+
+            const wcWinners = results[wcKey].filter(w => w !== null);
+
+            if (wcWinners.length === 3) {
+                const sorted = [...wcWinners].sort((a, b) => teams[b].seed - teams[a].seed);
+                // Lowest seed vs bye team
+                divEl.innerHTML += createMatchup(sorted[0], byeTeam, actualResults[divKey][0], simResults[divKey][0], {}, 'div', confUpper, 0);
+                // Middle vs highest seed winner
+                divEl.innerHTML += createMatchup(sorted[2], sorted[1], actualResults[divKey][1], simResults[divKey][1], {}, 'div', confUpper, 1);
+            } else {
+                divEl.innerHTML += createMatchup('TBD', byeTeam, null, null, {}, 'div', confUpper, 0);
+                divEl.innerHTML += createMatchup('TBD', 'TBD', null, null, {}, 'div', confUpper, 1);
+            }
+        }
+
+        function renderChampionship(conf, results) {
+            const champEl = document.getElementById(`${conf}-championship`);
+            champEl.innerHTML = `<div class="round-label">${conf.toUpperCase()} Champ</div>`;
+
+            const divKey = conf === 'afc' ? 'divAfc' : 'divNfc';
+            const champKey = conf === 'afc' ? 'champAfc' : 'champNfc';
+            const confUpper = conf.toUpperCase();
+
+            const divWinners = results[divKey].filter(w => w !== null);
+
+            if (divWinners.length === 2) {
+                const sorted = [...divWinners].sort((a, b) => teams[b].seed - teams[a].seed);
+                champEl.innerHTML += createMatchup(sorted[0], sorted[1], actualResults[champKey], simResults[champKey], {}, 'champ', confUpper, 0);
+            } else {
+                champEl.innerHTML += createMatchup('TBD', 'TBD', null, null, {}, 'champ', confUpper, 0);
+            }
+        }
+
+        function renderSuperBowl(results) {
+            const sbEl = document.getElementById('super-bowl-matchup');
             const nfcRep = results.champNfc || 'TBD';
             const afcRep = results.champAfc || 'TBD';
-            sbMatchup.innerHTML = `
-                <div class="team ${results.sbWinner === nfcRep ? 'winner' : results.sbWinner ? 'loser' : ''}">
+
+            const actualWinner = actualResults.sbWinner;
+            const simWinner = simResults.sbWinner;
+
+            const canClick = !actualWinner && nfcRep !== 'TBD' && afcRep !== 'TBD';
+
+            sbEl.innerHTML = `
+                <div class="team ${actualWinner === nfcRep ? 'winner' : simWinner === nfcRep ? 'simulated' : actualWinner ? 'loser' : ''} ${canClick ? 'clickable' : ''}"
+                     ${canClick ? `onclick="simulateWinner('sb', 'NFC', 0, '${nfcRep}')"` : ''}>
                     <span>NFC</span> <span>${nfcRep}</span>
                 </div>
-                <div class="team ${results.sbWinner === afcRep ? 'winner' : results.sbWinner ? 'loser' : ''}">
+                <div class="team ${actualWinner === afcRep ? 'winner' : simWinner === afcRep ? 'simulated' : actualWinner ? 'loser' : ''} ${canClick ? 'clickable' : ''}"
+                     ${canClick ? `onclick="simulateWinner('sb', 'AFC', 0, '${afcRep}')"` : ''}>
                     <span>AFC</span> <span>${afcRep}</span>
                 </div>
             `;
         }
 
-        function createMatchup(away, home, winner, gameData) {
+        function createMatchup(away, home, actualWinner, simWinner, gameData, round, conf, idx) {
             const awayTeam = teams[away] || { name: away, seed: '?' };
             const homeTeam = teams[home] || { name: home, seed: '?' };
             const awayScore = gameData.awayScore !== undefined ? gameData.awayScore : '';
             const homeScore = gameData.homeScore !== undefined ? gameData.homeScore : '';
 
+            const winner = actualWinner || simWinner;
+            const canClick = !actualWinner && away !== 'TBD' && home !== 'TBD';
+
+            const awayClass = actualWinner === away ? 'winner' : simWinner === away ? 'simulated' : winner ? 'loser' : '';
+            const homeClass = actualWinner === home ? 'winner' : simWinner === home ? 'simulated' : winner ? 'loser' : '';
+
             return `
                 <div class="matchup">
-                    <div class="team ${winner === away ? 'winner' : winner ? 'loser' : ''}">
+                    <div class="team ${awayClass} ${canClick ? 'clickable' : ''}"
+                         ${canClick ? `onclick="simulateWinner('${round}', '${conf}', ${idx}, '${away}')"` : ''}>
                         <span class="seed">${awayTeam.seed}</span>
                         <span>${away}</span>
                         ${awayScore !== '' ? `<span class="score">${awayScore}</span>` : ''}
                     </div>
-                    <div class="team ${winner === home ? 'winner' : winner ? 'loser' : ''}">
+                    <div class="team ${homeClass} ${canClick ? 'clickable' : ''}"
+                         ${canClick ? `onclick="simulateWinner('${round}', '${conf}', ${idx}, '${home}')"` : ''}>
                         <span class="seed">${homeTeam.seed}</span>
                         <span>${home}</span>
                         ${homeScore !== '' ? `<span class="score">${homeScore}</span>` : ''}
@@ -963,8 +1159,7 @@
             `;
         }
 
-        // Render picks table
-        function renderPicks() {
+        function renderPicks(results) {
             const header = document.getElementById('picks-header');
             const body = document.getElementById('picks-body');
 
@@ -978,40 +1173,50 @@
             `;
 
             const games = [
-                { round: 'Wild Card (1pt)', name: 'LAC @ NE', resultKey: 'wcAfc', idx: 0, pickKey: 'wcAfc' },
-                { round: '', name: 'BUF @ JAX', resultKey: 'wcAfc', idx: 1, pickKey: 'wcAfc' },
-                { round: '', name: 'HOU @ PIT', resultKey: 'wcAfc', idx: 2, pickKey: 'wcAfc' },
-                { round: '', name: 'GB @ CHI', resultKey: 'wcNfc', idx: 0, pickKey: 'wcNfc' },
-                { round: '', name: 'SF @ PHI', resultKey: 'wcNfc', idx: 1, pickKey: 'wcNfc' },
-                { round: '', name: 'LAR @ CAR', resultKey: 'wcNfc', idx: 2, pickKey: 'wcNfc' },
-                { round: 'Divisional (2pts)', name: 'AFC vs DEN', resultKey: 'divAfc', idx: 0, pickKey: 'divAfc' },
-                { round: '', name: 'AFC Other', resultKey: 'divAfc', idx: 1, pickKey: 'divAfc' },
-                { round: '', name: 'NFC vs SEA', resultKey: 'divNfc', idx: 0, pickKey: 'divNfc' },
-                { round: '', name: 'NFC Other', resultKey: 'divNfc', idx: 1, pickKey: 'divNfc' },
-                { round: 'Championship (3pts)', name: 'AFC Champ', resultKey: 'champAfc', idx: null, pickKey: 'champAfc' },
-                { round: '', name: 'NFC Champ', resultKey: 'champNfc', idx: null, pickKey: 'champNfc' },
-                { round: 'Super Bowl (4pts)', name: 'Super Bowl', resultKey: 'sbWinner', idx: null, pickKey: 'sb' },
-                { round: 'Tiebreaker', name: 'Total Points', resultKey: 'sbTotalPoints', idx: null, pickKey: 'tiebreaker' }
+                { round: 'Wild Card (1pt)', name: 'LAC @ NE', actualKey: 'wcAfc', simKey: 'wcAfc', idx: 0, pickKey: 'wcAfc' },
+                { round: '', name: 'BUF @ JAX', actualKey: 'wcAfc', simKey: 'wcAfc', idx: 1, pickKey: 'wcAfc' },
+                { round: '', name: 'HOU @ PIT', actualKey: 'wcAfc', simKey: 'wcAfc', idx: 2, pickKey: 'wcAfc' },
+                { round: '', name: 'GB @ CHI', actualKey: 'wcNfc', simKey: 'wcNfc', idx: 0, pickKey: 'wcNfc' },
+                { round: '', name: 'SF @ PHI', actualKey: 'wcNfc', simKey: 'wcNfc', idx: 1, pickKey: 'wcNfc' },
+                { round: '', name: 'LAR @ CAR', actualKey: 'wcNfc', simKey: 'wcNfc', idx: 2, pickKey: 'wcNfc' },
+                { round: 'Divisional (2pts)', name: 'AFC vs DEN', actualKey: 'divAfc', simKey: 'divAfc', idx: 0, pickKey: 'divAfc' },
+                { round: '', name: 'AFC Other', actualKey: 'divAfc', simKey: 'divAfc', idx: 1, pickKey: 'divAfc' },
+                { round: '', name: 'NFC vs SEA', actualKey: 'divNfc', simKey: 'divNfc', idx: 0, pickKey: 'divNfc' },
+                { round: '', name: 'NFC Other', actualKey: 'divNfc', simKey: 'divNfc', idx: 1, pickKey: 'divNfc' },
+                { round: 'Championship (3pts)', name: 'AFC Champ', actualKey: 'champAfc', simKey: 'champAfc', idx: null, pickKey: 'champAfc' },
+                { round: '', name: 'NFC Champ', actualKey: 'champNfc', simKey: 'champNfc', idx: null, pickKey: 'champNfc' },
+                { round: 'Super Bowl (4pts)', name: 'Super Bowl', actualKey: 'sbWinner', simKey: 'sbWinner', idx: null, pickKey: 'sb' },
+                { round: 'Tiebreaker', name: 'Total Points', actualKey: 'sbTotalPoints', simKey: null, idx: null, pickKey: 'tiebreaker' }
             ];
 
             body.innerHTML = games.map(game => {
-                const result = game.idx !== null ? results[game.resultKey]?.[game.idx] : results[game.resultKey];
+                const actual = game.idx !== null ? actualResults[game.actualKey]?.[game.idx] : actualResults[game.actualKey];
+                const sim = game.simKey && (game.idx !== null ? simResults[game.simKey]?.[game.idx] : simResults[game.simKey]);
+                const effective = actual || sim;
+
+                let resultDisplay = '-';
+                if (actual) resultDisplay = actual;
+                else if (sim) resultDisplay = `<span style="color:#FF9800">${sim}*</span>`;
 
                 return `
                     <tr>
                         <td class="game-col ${game.round ? 'round-header' : ''}">${game.round}</td>
                         <td class="game-col">${game.name}</td>
-                        <td class="actual-result">${result !== null && result !== undefined ? result : '-'}</td>
+                        <td class="actual-result">${resultDisplay}</td>
                         ${participants.map(name => {
                             const pick = game.idx !== null ? picks[name][game.pickKey]?.[game.idx] : picks[name][game.pickKey];
                             let className = 'pending';
-                            if (result !== null && result !== undefined) {
+
+                            if (actual !== null && actual !== undefined) {
                                 if (game.pickKey === 'tiebreaker') {
                                     className = '';
                                 } else {
-                                    className = pick === result ? 'correct' : 'incorrect';
+                                    className = pick === actual ? 'correct' : 'incorrect';
                                 }
+                            } else if (sim) {
+                                className = pick === sim ? 'simulated-correct' : 'simulated-incorrect';
                             }
+
                             return `<td class="${className}">${pick}</td>`;
                         }).join('')}
                     </tr>
@@ -1019,10 +1224,8 @@
             }).join('');
         }
 
-        // Initialize - fetch data on load
+        // Initialize
         fetchESPNData();
-
-        // Auto-refresh every 5 minutes
         setInterval(fetchESPNData, 5 * 60 * 1000);
     </script>
 </body>
