@@ -695,18 +695,30 @@
             'Amy':      { wcAfc: ['NE', 'BUF', 'HOU'], wcNfc: ['GB', 'PHI', 'LAR'], divAfc: ['DEN', 'NE'], divNfc: ['SEA', 'LAR'], champAfc: 'DEN', champNfc: 'SEA', sb: 'DEN', tiebreaker: 36 }
         };
 
-        // Actual results from ESPN
-        let actualResults = {
-            wcAfc: [null, null, null],
-            wcNfc: [null, null, null],
+        // Load actual results from localStorage or initialize with Wild Card results
+        let actualResults = JSON.parse(localStorage.getItem('nflMadnessResults')) || {
+            wcAfc: ['NE', 'BUF', 'HOU'],  // Wild Card winners: NE beat LAC, BUF beat JAX, HOU beat PIT
+            wcNfc: ['CHI', 'SF', 'LAR'],   // Wild Card winners: CHI beat GB, SF beat PHI, LAR beat CAR
             divAfc: [null, null],
             divNfc: [null, null],
             champAfc: null,
             champNfc: null,
             sbWinner: null,
             sbTotalPoints: null,
-            games: {}
+            games: {
+                'LAC@NE': { homeTeam: 'NE', awayTeam: 'LAC', homeScore: 0, awayScore: 0, completed: true, winner: 'NE' },
+                'BUF@JAX': { homeTeam: 'JAX', awayTeam: 'BUF', homeScore: 0, awayScore: 0, completed: true, winner: 'BUF' },
+                'HOU@PIT': { homeTeam: 'PIT', awayTeam: 'HOU', homeScore: 0, awayScore: 0, completed: true, winner: 'HOU' },
+                'GB@CHI': { homeTeam: 'CHI', awayTeam: 'GB', homeScore: 0, awayScore: 0, completed: true, winner: 'CHI' },
+                'SF@PHI': { homeTeam: 'PHI', awayTeam: 'SF', homeScore: 0, awayScore: 0, completed: true, winner: 'SF' },
+                'LAR@CAR': { homeTeam: 'CAR', awayTeam: 'LAR', homeScore: 0, awayScore: 0, completed: true, winner: 'LAR' }
+            }
         };
+
+        // Save results to localStorage
+        function saveResults() {
+            localStorage.setItem('nflMadnessResults', JSON.stringify(actualResults));
+        }
 
         // Simulated results (user clicks)
         let simResults = {
@@ -826,6 +838,7 @@
                 const response = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard');
                 const data = await response.json();
                 processESPNData(data);
+                saveResults();  // Persist results to localStorage
                 document.getElementById('last-updated').textContent = `Last updated: ${new Date().toLocaleString()}`;
                 renderAll();
             } catch (error) {
