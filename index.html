@@ -697,8 +697,8 @@
 
         // Load actual results from localStorage or initialize with Wild Card results
         let actualResults = JSON.parse(localStorage.getItem('nflMadnessResults')) || {
-            wcAfc: ['NE', 'BUF', 'HOU'],  // Wild Card winners: NE beat LAC, BUF beat JAX, HOU beat PIT
-            wcNfc: ['CHI', 'SF', 'LAR'],   // Wild Card winners: CHI beat GB, SF beat PHI, LAR beat CAR
+            wcAfc: ['NE', 'BUF', 'HOU'],  // Wild Card winners: NE beat LAC 16-3, BUF beat JAX 27-24, HOU beat PIT 30-6
+            wcNfc: ['CHI', 'SF', 'LAR'],   // Wild Card winners: CHI beat GB 31-27, SF beat PHI 23-19, LAR beat CAR 34-31
             divAfc: [null, null],
             divNfc: [null, null],
             champAfc: null,
@@ -706,12 +706,12 @@
             sbWinner: null,
             sbTotalPoints: null,
             games: {
-                'LAC@NE': { homeTeam: 'NE', awayTeam: 'LAC', homeScore: 0, awayScore: 0, completed: true, winner: 'NE' },
-                'BUF@JAX': { homeTeam: 'JAX', awayTeam: 'BUF', homeScore: 0, awayScore: 0, completed: true, winner: 'BUF' },
-                'HOU@PIT': { homeTeam: 'PIT', awayTeam: 'HOU', homeScore: 0, awayScore: 0, completed: true, winner: 'HOU' },
-                'GB@CHI': { homeTeam: 'CHI', awayTeam: 'GB', homeScore: 0, awayScore: 0, completed: true, winner: 'CHI' },
-                'SF@PHI': { homeTeam: 'PHI', awayTeam: 'SF', homeScore: 0, awayScore: 0, completed: true, winner: 'SF' },
-                'LAR@CAR': { homeTeam: 'CAR', awayTeam: 'LAR', homeScore: 0, awayScore: 0, completed: true, winner: 'LAR' }
+                'LAC@NE': { homeTeam: 'NE', awayTeam: 'LAC', homeScore: 16, awayScore: 3, completed: true, winner: 'NE' },
+                'BUF@JAX': { homeTeam: 'JAX', awayTeam: 'BUF', homeScore: 24, awayScore: 27, completed: true, winner: 'BUF' },
+                'HOU@PIT': { homeTeam: 'PIT', awayTeam: 'HOU', homeScore: 6, awayScore: 30, completed: true, winner: 'HOU' },
+                'GB@CHI': { homeTeam: 'CHI', awayTeam: 'GB', homeScore: 31, awayScore: 27, completed: true, winner: 'CHI' },
+                'SF@PHI': { homeTeam: 'PHI', awayTeam: 'SF', homeScore: 19, awayScore: 23, completed: true, winner: 'SF' },
+                'LAR@CAR': { homeTeam: 'CAR', awayTeam: 'LAR', homeScore: 31, awayScore: 34, completed: true, winner: 'LAR' }
             }
         };
 
@@ -831,11 +831,12 @@
             }
         }
 
-        // Fetch ESPN Data
+        // Fetch ESPN Data - get all playoff games for the 2026 season
         async function fetchESPNData() {
             try {
                 document.getElementById('last-updated').textContent = 'Fetching scores...';
-                const response = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard');
+                // Fetch all playoff games from Jan 10 - Feb 10 to cover Wild Card through Super Bowl
+                const response = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=20260110-20260210&seasontype=3');
                 const data = await response.json();
                 processESPNData(data);
                 saveResults();  // Persist results to localStorage
