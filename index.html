@@ -557,6 +557,114 @@
             h1 { font-size: 1.6rem; }
             .bracket { min-width: 900px; }
         }
+
+        /* Print Styles */
+        @media print {
+            /* Hide everything except scenarios */
+            body > *:not(#print-content) {
+                display: none !important;
+            }
+
+            .header,
+            .controls,
+            .main-content > section:not(#scenarios-section),
+            .collapse-btn,
+            .btn {
+                display: none !important;
+            }
+
+            #scenarios-section {
+                display: block !important;
+            }
+
+            #scenarios-content {
+                display: block !important;
+                max-height: none !important;
+                opacity: 1 !important;
+            }
+
+            .section-header h2 {
+                color: #000;
+                border-bottom: 2px solid #000;
+                padding-bottom: 10px;
+            }
+
+            /* Make print-friendly colors */
+            body {
+                background: white;
+                color: #000;
+            }
+
+            .scenario {
+                background: white;
+                border: 1px solid #333;
+                page-break-inside: avoid;
+            }
+
+            .scenario-title {
+                background: #f0f0f0;
+                color: #000;
+                border-bottom: 2px solid #333;
+            }
+
+            .standings-table {
+                background: white;
+                color: #000;
+            }
+
+            .standings-table th {
+                background: #e0e0e0;
+                color: #000;
+                border: 1px solid #333;
+            }
+
+            .standings-table td {
+                border: 1px solid #333;
+                color: #000;
+            }
+
+            .tied-row {
+                background: #fff9e6 !important;
+            }
+
+            .tiebreaker-highlight {
+                color: #000;
+                font-weight: bold;
+                text-decoration: underline;
+            }
+
+            .payout-value {
+                color: #000;
+                font-weight: bold;
+            }
+
+            .rank-1 { color: #000; font-weight: bold; }
+            .rank-2 { color: #000; font-weight: bold; }
+            .rank-3 { color: #000; font-weight: bold; }
+
+            /* Fit both scenarios on one page */
+            .scenarios-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+
+            /* Print header */
+            #scenarios-section::before {
+                content: "2026 NFL Playoff Madness - Super Bowl Scenarios";
+                display: block;
+                font-size: 1.5rem;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 10px;
+                color: #000;
+            }
+
+            #scenarios-content > p {
+                color: #000;
+                page-break-after: avoid;
+            }
+        }
     </style>
 </head>
 <body>
@@ -621,7 +729,10 @@
         <section id="scenarios-section" style="display: none;">
             <div class="section-header" onclick="toggleScenarios()">
                 <h2 style="margin-bottom: 0; border-bottom: none;">Super Bowl Scenarios - Final Standings</h2>
-                <button class="collapse-btn" id="scenarios-toggle">Hide ▲</button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-primary" onclick="window.print()" style="font-size: 0.85rem; padding: 6px 12px;">Print Scenarios</button>
+                    <button class="collapse-btn" id="scenarios-toggle">Hide ▲</button>
+                </div>
             </div>
             <div class="collapsible" id="scenarios-content" style="margin-top: 15px;">
                 <p style="text-align: center; color: #888; font-size: 0.9rem; margin-bottom: 15px;">
