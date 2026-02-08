@@ -561,20 +561,27 @@
         /* Print Styles */
         @media print {
             /* Hide everything except scenarios */
-            body > *:not(#print-content) {
+            .header,
+            .controls,
+            .simulation-banner,
+            .bracket-container,
+            .picks-container,
+            .two-column,
+            .btn,
+            .collapse-btn {
                 display: none !important;
             }
 
-            .header,
-            .controls,
-            .main-content > section:not(#scenarios-section),
-            .collapse-btn,
-            .btn {
+            .main-content > section:not(#scenarios-section) {
                 display: none !important;
             }
 
             #scenarios-section {
                 display: block !important;
+            }
+
+            .section-header {
+                pointer-events: none;
             }
 
             #scenarios-content {
