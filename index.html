@@ -543,6 +543,16 @@
             font-weight: bold;
         }
 
+        .tied-row {
+            background: rgba(255, 152, 0, 0.1);
+        }
+
+        .tiebreaker-highlight {
+            color: #FF9800;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: 1.6rem; }
             .bracket { min-width: 900px; }
@@ -615,7 +625,8 @@
             </div>
             <div class="collapsible" id="scenarios-content" style="margin-top: 15px;">
                 <p style="text-align: center; color: #888; font-size: 0.9rem; margin-bottom: 15px;">
-                    * Indicates tie - winner determined by closest tiebreaker (total SB points)
+                    * Indicates tie on points - winner determined by whose tiebreaker guess is closest to actual Super Bowl total points.<br>
+                    <span style="color: #FF9800;">Orange highlighted tiebreakers</span> show which values would break the tie.
                 </p>
                 <div class="scenarios-container">
                     <div class="scenario">
@@ -1423,31 +1434,59 @@
                 ...scores[name]
             })).sort((a, b) => {
                 if (b.totalPoints !== a.totalPoints) return b.totalPoints - a.totalPoints;
-                // If tied, show tiebreaker would matter
-                return 0;
+                // If tied on points, sort by tiebreaker for display
+                return a.tiebreaker - b.tiebreaker;
             });
+
+            // Calculate actual ranks accounting for ties
+            const ranksWithTies = [];
+            let currentRank = 1;
+            for (let i = 0; i < sorted.length; i++) {
+                if (i > 0 && sorted[i].totalPoints !== sorted[i-1].totalPoints) {
+                    currentRank = i + 1;
+                }
+                ranksWithTies.push(currentRank);
+            }
 
             const tbody = document.getElementById(bodyId);
             tbody.innerHTML = sorted.map((p, i) => {
-                const rank = i + 1;
-                const payout = rank <= 4 ? `$${payouts[rank - 1]}` : '-';
+                const rank = ranksWithTies[i];
 
-                // Check if there are ties at this position
-                let tiedWith = [];
-                sorted.forEach((other, j) => {
-                    if (other.totalPoints === p.totalPoints && j !== i) {
-                        tiedWith.push(other.name);
+                // Find all people tied at this rank
+                const tiedPlayers = sorted.filter((other, j) =>
+                    other.totalPoints === p.totalPoints
+                );
+                const hasTie = tiedPlayers.length > 1;
+
+                // Determine payout display for tied positions
+                let payoutDisplay = '-';
+                if (hasTie && rank <= 4) {
+                    // Find the range of payouts for tied positions
+                    const tiedRanks = [];
+                    for (let r = rank; r < rank + tiedPlayers.length && r <= 4; r++) {
+                        tiedRanks.push(r);
                     }
-                });
-                const hasTie = tiedWith.length > 0;
+                    if (tiedRanks.length > 0) {
+                        const payoutAmounts = tiedRanks.map(r => payouts[r - 1]);
+                        if (payoutAmounts.length === 1) {
+                            payoutDisplay = `$${payoutAmounts[0]}`;
+                        } else {
+                            payoutDisplay = `$${Math.min(...payoutAmounts)}-$${Math.max(...payoutAmounts)}`;
+                        }
+                    }
+                } else if (rank <= 4) {
+                    payoutDisplay = `$${payouts[rank - 1]}`;
+                }
+
+                const tiebreakerClass = hasTie ? 'tiebreaker-highlight' : 'tiebreaker';
 
                 return `
-                    <tr>
+                    <tr class="${hasTie ? 'tied-row' : ''}">
                         <td class="rank rank-${rank}">${rank}${hasTie ? '*' : ''}</td>
                         <td>${p.name}</td>
                         <td class="points">${p.totalPoints}</td>
-                        <td class="tiebreaker">${p.tiebreaker} pts</td>
-                        <td class="payout-value">${payout}</td>
+                        <td class="${tiebreakerClass}">${p.tiebreaker} pts</td>
+                        <td class="payout-value">${payoutDisplay}</td>
                     </tr>
                 `;
             }).join('');
