@@ -510,6 +510,39 @@
             opacity: 0;
         }
 
+        /* Scenarios */
+        .scenarios-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .scenarios-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .scenario {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .scenario-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-align: center;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+        }
+
+        .payout-value {
+            color: #FFD700;
+            font-weight: bold;
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: 1.6rem; }
             .bracket { min-width: 900px; }
@@ -569,6 +602,51 @@
                         <div class="round" id="afc-wildcard">
                             <div class="round-label">Wild Card</div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Super Bowl Scenarios -->
+        <section id="scenarios-section" style="display: none;">
+            <div class="section-header" onclick="toggleScenarios()">
+                <h2 style="margin-bottom: 0; border-bottom: none;">Super Bowl Scenarios - Final Standings</h2>
+                <button class="collapse-btn" id="scenarios-toggle">Hide ▲</button>
+            </div>
+            <div class="collapsible" id="scenarios-content" style="margin-top: 15px;">
+                <p style="text-align: center; color: #888; font-size: 0.9rem; margin-bottom: 15px;">
+                    * Indicates tie - winner determined by closest tiebreaker (total SB points)
+                </p>
+                <div class="scenarios-container">
+                    <div class="scenario">
+                        <h3 class="scenario-title">If SEA Wins Super Bowl</h3>
+                        <table class="standings-table" id="scenario-sea-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Points</th>
+                                    <th>Tiebreaker</th>
+                                    <th>Payout</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scenario-sea-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="scenario">
+                        <h3 class="scenario-title">If NE Wins Super Bowl</h3>
+                        <table class="standings-table" id="scenario-ne-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Points</th>
+                                    <th>Tiebreaker</th>
+                                    <th>Payout</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scenario-ne-body"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -1053,6 +1131,7 @@
             renderBracket(results);
             renderStandings(results);
             renderPicks(results);
+            renderScenarios();
         }
 
         function renderStandings(results) {
@@ -1311,6 +1390,81 @@
             `;
 
             body.innerHTML = gameRows + totalsRow;
+        }
+
+        // Render Super Bowl scenarios
+        function renderScenarios() {
+            const results = getEffectiveResults();
+
+            // Only show scenarios if we're at the Super Bowl (both championship games decided, SB not decided)
+            if (!results.champAfc || !results.champNfc || results.sbWinner) {
+                document.getElementById('scenarios-section').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('scenarios-section').style.display = 'block';
+
+            const payouts = [130, 70, 40, 20];
+
+            // Scenario 1: SEA wins
+            const seaResults = { ...results, sbWinner: 'SEA', sbTotalPoints: 50 }; // Use placeholder for tiebreaker
+            const seaScores = calculateScores(seaResults, false);
+            renderScenarioTable('scenario-sea-body', seaScores, payouts);
+
+            // Scenario 2: NE wins
+            const neResults = { ...results, sbWinner: 'NE', sbTotalPoints: 50 }; // Use placeholder for tiebreaker
+            const neScores = calculateScores(neResults, false);
+            renderScenarioTable('scenario-ne-body', neScores, payouts);
+        }
+
+        function renderScenarioTable(bodyId, scores, payouts) {
+            const sorted = participants.map(name => ({
+                name,
+                ...scores[name]
+            })).sort((a, b) => {
+                if (b.points !== a.points) return b.points - a.points;
+                // If tied, show tiebreaker would matter
+                return 0;
+            });
+
+            const tbody = document.getElementById(bodyId);
+            tbody.innerHTML = sorted.map((p, i) => {
+                const rank = i + 1;
+                const payout = rank <= 4 ? `$${payouts[rank - 1]}` : '-';
+
+                // Check if there are ties at this position
+                let tiedWith = [];
+                sorted.forEach((other, j) => {
+                    if (other.points === p.points && j !== i) {
+                        tiedWith.push(other.name);
+                    }
+                });
+                const hasTie = tiedWith.length > 0;
+
+                return `
+                    <tr>
+                        <td class="rank rank-${rank}">${rank}${hasTie ? '*' : ''}</td>
+                        <td>${p.name}</td>
+                        <td class="points">${p.points}</td>
+                        <td class="tiebreaker">${p.tiebreaker} pts</td>
+                        <td class="payout-value">${payout}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Toggle scenarios visibility
+        function toggleScenarios() {
+            const content = document.getElementById('scenarios-content');
+            const btn = document.getElementById('scenarios-toggle');
+
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                btn.textContent = 'Hide ▲';
+            } else {
+                content.classList.add('collapsed');
+                btn.textContent = 'Show ▼';
+            }
         }
 
         // Toggle standings visibility
