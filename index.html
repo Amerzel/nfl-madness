@@ -695,23 +695,32 @@
             'Amy':      { wcAfc: ['NE', 'BUF', 'HOU'], wcNfc: ['GB', 'PHI', 'LAR'], divAfc: ['DEN', 'NE'], divNfc: ['SEA', 'LAR'], champAfc: 'DEN', champNfc: 'SEA', sb: 'DEN', tiebreaker: 36 }
         };
 
-        // Load actual results from localStorage or initialize with Wild Card results
+        // Load actual results from localStorage or initialize with completed playoff results
         let actualResults = JSON.parse(localStorage.getItem('nflMadnessResults')) || {
-            wcAfc: ['NE', 'BUF', 'HOU'],  // Wild Card winners: NE beat LAC 16-3, BUF beat JAX 27-24, HOU beat PIT 30-6
-            wcNfc: ['CHI', 'SF', 'LAR'],   // Wild Card winners: CHI beat GB 31-27, SF beat PHI 23-19, LAR beat CAR 34-31
-            divAfc: [null, null],
-            divNfc: [null, null],
-            champAfc: null,
-            champNfc: null,
-            sbWinner: null,
+            wcAfc: ['NE', 'BUF', 'HOU'],  // Wild Card: NE beat LAC 16-3, BUF beat JAX 27-24, HOU beat PIT 30-6
+            wcNfc: ['CHI', 'SF', 'LAR'],   // Wild Card: CHI beat GB 31-27, SF beat PHI 23-19, LAR beat CAR 34-31
+            divAfc: ['DEN', 'NE'],         // Divisional: DEN beat BUF 33-30, NE beat HOU 28-16
+            divNfc: ['SEA', 'LAR'],        // Divisional: SEA beat SF 41-6, LAR beat CHI 20-17
+            champAfc: 'NE',                // AFC Championship: NE beat DEN 10-7
+            champNfc: 'SEA',               // NFC Championship: SEA beat LAR 31-27
+            sbWinner: null,                // Super Bowl: SEA vs NE (not yet played)
             sbTotalPoints: null,
             games: {
+                // Wild Card
                 'LAC@NE': { homeTeam: 'NE', awayTeam: 'LAC', homeScore: 16, awayScore: 3, completed: true, winner: 'NE' },
                 'BUF@JAX': { homeTeam: 'JAX', awayTeam: 'BUF', homeScore: 24, awayScore: 27, completed: true, winner: 'BUF' },
                 'HOU@PIT': { homeTeam: 'PIT', awayTeam: 'HOU', homeScore: 6, awayScore: 30, completed: true, winner: 'HOU' },
                 'GB@CHI': { homeTeam: 'CHI', awayTeam: 'GB', homeScore: 31, awayScore: 27, completed: true, winner: 'CHI' },
                 'SF@PHI': { homeTeam: 'PHI', awayTeam: 'SF', homeScore: 19, awayScore: 23, completed: true, winner: 'SF' },
-                'LAR@CAR': { homeTeam: 'CAR', awayTeam: 'LAR', homeScore: 31, awayScore: 34, completed: true, winner: 'LAR' }
+                'LAR@CAR': { homeTeam: 'CAR', awayTeam: 'LAR', homeScore: 31, awayScore: 34, completed: true, winner: 'LAR' },
+                // Divisional
+                'BUF@DEN': { homeTeam: 'DEN', awayTeam: 'BUF', homeScore: 33, awayScore: 30, completed: true, winner: 'DEN' },
+                'SF@SEA': { homeTeam: 'SEA', awayTeam: 'SF', homeScore: 41, awayScore: 6, completed: true, winner: 'SEA' },
+                'HOU@NE': { homeTeam: 'NE', awayTeam: 'HOU', homeScore: 28, awayScore: 16, completed: true, winner: 'NE' },
+                'LAR@CHI': { homeTeam: 'CHI', awayTeam: 'LAR', homeScore: 17, awayScore: 20, completed: true, winner: 'LAR' },
+                // Championship
+                'NE@DEN': { homeTeam: 'DEN', awayTeam: 'NE', homeScore: 7, awayScore: 10, completed: true, winner: 'NE' },
+                'LAR@SEA': { homeTeam: 'SEA', awayTeam: 'LAR', homeScore: 31, awayScore: 27, completed: true, winner: 'SEA' }
             }
         };
 
@@ -880,8 +889,14 @@
                 const notes = competition.notes;
                 const headline = notes && notes[0] ? notes[0].headline : '';
 
+                // Championship games (check these first!)
+                if (headline.includes('AFC Championship')) {
+                    actualResults.champAfc = winner;
+                } else if (headline.includes('NFC Championship')) {
+                    actualResults.champNfc = winner;
+                }
                 // Wild Card
-                if ((awayAbbr === 'LAC' && homeAbbr === 'NE') || (awayAbbr === 'NE' && homeAbbr === 'LAC')) {
+                else if ((awayAbbr === 'LAC' && homeAbbr === 'NE') || (awayAbbr === 'NE' && homeAbbr === 'LAC')) {
                     actualResults.wcAfc[0] = winner;
                 } else if ((awayAbbr === 'BUF' && homeAbbr === 'JAX') || (awayAbbr === 'JAX' && homeAbbr === 'BUF')) {
                     actualResults.wcAfc[1] = winner;
@@ -904,9 +919,6 @@
                 } else if (teams[homeAbbr]?.conf === 'NFC' && teams[awayAbbr]?.conf === 'NFC') {
                     if (actualResults.divNfc[1] === null) actualResults.divNfc[1] = winner;
                 }
-
-                if (headline.includes('AFC Championship')) actualResults.champAfc = winner;
-                else if (headline.includes('NFC Championship')) actualResults.champNfc = winner;
 
                 if (headline.includes('Super Bowl')) {
                     actualResults.sbWinner = winner;
